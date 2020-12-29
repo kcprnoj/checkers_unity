@@ -43,6 +43,6 @@ public class Piece
     public void MovePiece()
     {
         calcPosition();
-        Go.transform.position = (Vector3.right * posX) + (Vector3.forward * posZ) + boardOffset + pieceOffset;
+        Go.transform.position = ((Vector3.right * posX) + (Vector3.forward * posZ) + boardOffset + pieceOffset);
     }
 }

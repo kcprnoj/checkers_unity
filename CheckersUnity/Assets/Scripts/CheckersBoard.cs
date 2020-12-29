@@ -12,9 +12,12 @@ public class CheckersBoard : MonoBehaviour
     public Piece[,] Board;
     private Vector2 mouseOver;
     private Vector3 boardOffset = new Vector3(-4f, 0, -4f);
+    private Vector3 pieceOffset = new Vector3(0.5f, 0, 0.5f);
 
     public GameObject WhitePiecePrefab;
     public GameObject BlackPiecePrefab;
+    public GameObject WhiteKingPrefab;
+    public GameObject BlackKingPrefab;
 
     public void Awake()
     {
@@ -32,7 +35,7 @@ public class CheckersBoard : MonoBehaviour
 
     public void Update()
     {
-
+        Print();
     }
 
     public void CreateBoard()
@@ -41,17 +44,15 @@ public class CheckersBoard : MonoBehaviour
         {
             for (int j = 0; j < 8; j++)
             {
+                Board[i, j] = null;
+
                 if ((i + j) % 2 == 0)
                 {
                     if (i < 3)
                         GeneratePiece(i, j, 1);
                     else if (i > 4)
                         GeneratePiece(i, j, 2);
-                    else
-                        Board[i, j] = null;
                 }
-                else
-                    Board[i, j] = null;
             }
         }
     }
@@ -71,7 +72,7 @@ public class CheckersBoard : MonoBehaviour
 
         if (row == 8 || row == 0)
         {
-            piece.King = true;
+            MakeKing(row, col);
             if (piece.Color == 1)
                 BlackKings++;
             else
@@ -82,6 +83,8 @@ public class CheckersBoard : MonoBehaviour
     public void OnMouseDown()
     {
         CheckMousePostition();
+        if(selectedPawn != null)
+            MakeKing(selectedPawn.Row, selectedPawn.Col);
     }
 
     private void CheckMousePostition()
@@ -91,13 +94,16 @@ public class CheckersBoard : MonoBehaviour
         {
             mouseOver.x = (int)(hit.point.x - boardOffset.x);
             mouseOver.y = (int)(hit.point.z - boardOffset.z);
+            selectedPawn = Board[(int)mouseOver.y, (int)mouseOver.x];
+            if (selectedPawn == null)
+                Debug.Log("Co do kurwy : ");
         }
         else
         {
             mouseOver.x = -1;
             mouseOver.y = -1;
         }
-        Debug.Log("Mouse position : " + mouseOver);
+        Debug.Log("Mouse location : " + mouseOver + "  " + selectedPawn);
     }
 
     private void GeneratePiece(int x, int y, int color)
@@ -109,9 +115,40 @@ public class CheckersBoard : MonoBehaviour
             go = Instantiate(WhitePiecePrefab);
         else
             return;
+
         go.transform.SetParent(transform, true);
         go.transform.localScale = new Vector3(1, 1, 1);
-        Piece p = new Piece(x, y, color, go);
-        Board[x, y] = p;
+        Board[x, y] = new Piece(x, y, color, go);
+    }
+
+    private void MakeKing(int x, int y)
+    {
+        if(Board[x, y] == null)
+        {
+            return;
+        }
+
+        Board[x, y].King = true;
+        Destroy(Board[x, y].Go);
+        if (Board[x, y].Color == 1)
+            Board[x, y].Go = Instantiate(BlackKingPrefab);
+        else if (Board[x, y].Color == 2)
+            Board[x, y].Go = Instantiate(WhiteKingPrefab);
+        else
+            return;
+
+        Board[x, y].Go.transform.SetParent(transform, true);
+        Board[x, y].Go.transform.localScale = new Vector3(1, 1, 1);
+        Board[x, y].MovePiece();
+    }
+
+    private void Print()
+    {
+        for (int i=0; i<8; i++)
+        {
+            for (int j=0; j<8; j++)
+                if (Board[i, j] != null)
+                    Board[i, j].MovePiece();
+        }
     }
 }
