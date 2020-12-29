@@ -1915,6 +1915,9 @@ MonoBehaviour:
     type: 3}
   BlackKingPrefab: {fileID: 919132149155446097, guid: e04607ffd1071f748a80ab4ddf421ce2,
     type: 3}
+  whitePieceMaterial: {fileID: 2100000, guid: 9d436ec57c514974e9a6868f70388c03, type: 2}
+  blackPieceMaterial: {fileID: 2100000, guid: ad5ccb71d7f2dc5499fa15ebe6f50035, type: 2}
+  chosenPieceMaterial: {fileID: 2100000, guid: 0c4becc636ce95b4abcabb0ac7fbb74f, type: 2}
 --- !u!114 &6977679064158086441
 MonoBehaviour:
   m_ObjectHideFlags: 0
