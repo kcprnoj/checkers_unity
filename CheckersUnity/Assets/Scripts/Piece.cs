@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Piece : MonoBehaviour
+public class Piece
 {
     public int Row, Col;
     public int Color;
     public bool King;
     public int Direction;
+    private Vector3 boardOffset = new Vector3(-4f, 0, -4f);
+    private Vector3 pieceOffset = new Vector3(0.5f, 0, 0.5f);
     public GameObject Go;
     private float posX, posZ;
 
@@ -29,19 +31,18 @@ public class Piece : MonoBehaviour
     {
         Row = row;
         Col = col;
+        MovePiece();
     }
 
     public void calcPosition()
     {
         posX = Col;
         posZ = Row;
-        posX *= 2.5f;
-        posZ *= 2.5f;
     }
 
     public void MovePiece()
     {
         calcPosition();
-        Go.transform.position = (Vector3.right * posX) + (Vector3.forward * posZ);
+        Go.transform.position = (Vector3.right * posX) + (Vector3.forward * posZ) + boardOffset + pieceOffset;
     }
 }

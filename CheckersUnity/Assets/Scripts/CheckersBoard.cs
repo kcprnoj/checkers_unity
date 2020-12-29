@@ -10,6 +10,8 @@ public class CheckersBoard : MonoBehaviour
     public int BlackKings;
     public int WhiteKings;
     public Piece[,] Board;
+    private Vector2 mouseOver;
+    private Vector3 boardOffset = new Vector3(-4f, 0, -4f);
 
     public GameObject WhitePiecePrefab;
     public GameObject BlackPiecePrefab;
@@ -28,13 +30,18 @@ public class CheckersBoard : MonoBehaviour
         CreateBoard();
     }
 
+    public void Update()
+    {
+
+    }
+
     public void CreateBoard()
     {
         for (int i = 0; i < 8; i++)
         {
             for (int j = 0; j < 8; j++)
             {
-                if ((i + j) % 2 == 1)
+                if ((i + j) % 2 == 0)
                 {
                     if (i < 3)
                         GeneratePiece(i, j, 1);
@@ -47,21 +54,6 @@ public class CheckersBoard : MonoBehaviour
                     Board[i, j] = null;
             }
         }
-    }
-
-    public void GeneratePiece(int x, int y, int color)
-    {
-        GameObject go = null;
-        if (color == 1)
-            go = Instantiate(BlackPiecePrefab);
-        else if (color == 2)
-            go = Instantiate(WhitePiecePrefab);
-        else
-            return;
-        go.transform.SetParent(transform, true);
-        go.transform.localScale = new Vector3(1, 1, 1);
-        Piece p = new Piece(x, y, color, go);
-        p.MovePiece();
     }
 
     public Piece GetPiece(int row, int col)
@@ -85,5 +77,41 @@ public class CheckersBoard : MonoBehaviour
             else
                 WhiteKings++;
         }
+    }
+
+    public void OnMouseDown()
+    {
+        CheckMousePostition();
+    }
+
+    private void CheckMousePostition()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 50.0f, LayerMask.GetMask("Board")))
+        {
+            mouseOver.x = (int)(hit.point.x - boardOffset.x);
+            mouseOver.y = (int)(hit.point.z - boardOffset.z);
+        }
+        else
+        {
+            mouseOver.x = -1;
+            mouseOver.y = -1;
+        }
+        Debug.Log("Mouse position : " + mouseOver);
+    }
+
+    private void GeneratePiece(int x, int y, int color)
+    {
+        GameObject go = null;
+        if (color == 1)
+            go = Instantiate(BlackPiecePrefab);
+        else if (color == 2)
+            go = Instantiate(WhitePiecePrefab);
+        else
+            return;
+        go.transform.SetParent(transform, true);
+        go.transform.localScale = new Vector3(1, 1, 1);
+        Piece p = new Piece(x, y, color, go);
+        Board[x, y] = p;
     }
 }
