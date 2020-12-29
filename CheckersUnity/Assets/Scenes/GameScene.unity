@@ -1911,6 +1911,10 @@ MonoBehaviour:
     type: 3}
   BlackPiecePrefab: {fileID: 919132149155446097, guid: a9f69ff420aacd040835a9d88399cbdf,
     type: 3}
+  WhiteKingPrefab: {fileID: 919132149155446097, guid: 4036fd14341188f4bb94048a5cb835af,
+    type: 3}
+  BlackKingPrefab: {fileID: 919132149155446097, guid: e04607ffd1071f748a80ab4ddf421ce2,
+    type: 3}
 --- !u!114 &6977679064158086441
 MonoBehaviour:
   m_ObjectHideFlags: 0

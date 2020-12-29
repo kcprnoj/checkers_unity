@@ -6,6 +6,7 @@ public class Piece
 {
     public int Row, Col;
     public int Color;
+    public bool Active;
     public bool King;
     public int Direction;
     private Vector3 boardOffset = new Vector3(-4f, 0, -4f);
@@ -20,6 +21,7 @@ public class Piece
         Color = color;
         Go = go;
         King = false;
+        Active = false;
         if (color == 1)
             Direction = 1;
         else
