@@ -19,6 +19,10 @@ public class CheckersBoard : MonoBehaviour
     public GameObject WhiteKingPrefab;
     public GameObject BlackKingPrefab;
 
+    public Material whitePieceMaterial;
+    public Material blackPieceMaterial;
+    public Material chosenPieceMaterial;
+
     public void Awake()
     {
         BlackLeft = 12;
@@ -83,8 +87,12 @@ public class CheckersBoard : MonoBehaviour
     public void OnMouseDown()
     {
         CheckMousePostition();
-        if(selectedPawn != null)
-            MakeKing(selectedPawn.Row, selectedPawn.Col);
+        if (selectedPawn != null) 
+        {
+            //MakeKing(selectedPawn.Row, selectedPawn.Col);
+            ChangeMaterial(selectedPawn);
+        }
+
     }
 
     private void CheckMousePostition()
@@ -92,6 +100,9 @@ public class CheckersBoard : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 50.0f, LayerMask.GetMask("Board")))
         {
+            if (selectedPawn != null)
+                ChangeMaterial(selectedPawn);
+
             mouseOver.x = (int)(hit.point.x - boardOffset.x);
             mouseOver.y = (int)(hit.point.z - boardOffset.z);
             selectedPawn = Board[(int)mouseOver.y, (int)mouseOver.x];
@@ -149,6 +160,25 @@ public class CheckersBoard : MonoBehaviour
             for (int j=0; j<8; j++)
                 if (Board[i, j] != null)
                     Board[i, j].MovePiece();
+        }
+    }
+
+    private void ChangeMaterial(Piece selected)
+    {
+        if( selected.Active && selected.Color == 2)
+        {
+            selected.Go.GetComponent<Renderer>().material = whitePieceMaterial;
+            selected.Active = false;
+        }
+        else if(selected.Active && selected.Color == 1)
+        {
+            selected.Go.GetComponent<Renderer>().material = blackPieceMaterial;
+            selected.Active = false;
+        }
+        else 
+        {
+            selected.Go.GetComponent<Renderer>().material = chosenPieceMaterial;
+            selected.Active = true;
         }
     }
 }
