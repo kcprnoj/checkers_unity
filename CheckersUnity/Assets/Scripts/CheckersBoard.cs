@@ -87,9 +87,12 @@ public class CheckersBoard : MonoBehaviour
     public void OnMouseDown()
     {
         CheckMousePostition();
-        if (selectedPawn != null)
+        if (selectedPawn != null) 
+        {
             //MakeKing(selectedPawn.Row, selectedPawn.Col);
             ChangeMaterial(selectedPawn);
+        }
+
     }
 
     private void CheckMousePostition()
@@ -97,6 +100,9 @@ public class CheckersBoard : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 50.0f, LayerMask.GetMask("Board")))
         {
+            if (selectedPawn != null)
+                ChangeMaterial(selectedPawn);
+
             mouseOver.x = (int)(hit.point.x - boardOffset.x);
             mouseOver.y = (int)(hit.point.z - boardOffset.z);
             selectedPawn = Board[(int)mouseOver.y, (int)mouseOver.x];
