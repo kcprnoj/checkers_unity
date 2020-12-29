@@ -58,7 +58,8 @@ public class CheckersBoard : MonoBehaviour
             go = Instantiate(WhitePiecePrefab);
         else
             return;
-        go.transform.SetParent(transform);
+        go.transform.SetParent(transform, true);
+        go.transform.localScale = new Vector3(1, 1, 1);
         Piece p = new Piece(x, y, color, go);
         p.MovePiece();
     }

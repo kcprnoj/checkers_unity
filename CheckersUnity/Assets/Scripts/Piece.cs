@@ -9,7 +9,6 @@ public class Piece : MonoBehaviour
     public bool King;
     public int Direction;
     public GameObject Go;
-    public Vector3 boardOffset = new Vector3(-4.0f, 0, -4.0f);
     private float posX, posZ;
 
     public Piece(int row, int col, int color, GameObject go)
@@ -23,6 +22,7 @@ public class Piece : MonoBehaviour
             Direction = 1;
         else
             Direction = -1;
+        MovePiece();
     }
 
     public void Move(int row, int col)
@@ -35,6 +35,8 @@ public class Piece : MonoBehaviour
     {
         posX = Col;
         posZ = Row;
+        posX *= 2.5f;
+        posZ *= 2.5f;
     }
 
     public void MovePiece()
