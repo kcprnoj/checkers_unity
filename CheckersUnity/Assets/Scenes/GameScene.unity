@@ -394,6 +394,8 @@ GameObject:
   - component: {fileID: 7754743975459880860}
   - component: {fileID: 6643294448470847545}
   - component: {fileID: 8923124357266212083}
+  - component: {fileID: 6977679064158086441}
+  - component: {fileID: 6977679064158086440}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -401,6 +403,38 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &6977679064158086440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6977679064158086438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8efeea3618395b843813562a1d63e61a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BlackLeft: 12
+  WhiteLeft: 12
+  BlackKings: 0
+  WhiteKings: 0
+  WhitePiecePrefab: {fileID: 919132149155446097, guid: 5af366d6a391f06448eb30b102325302,
+    type: 3}
+  BlackPiecePrefab: {fileID: 919132149155446097, guid: a9f69ff420aacd040835a9d88399cbdf,
+    type: 3}
+--- !u!114 &6977679064158086441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6977679064158086438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e3072d8b57f1b649a6a6dbce4e73eac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7754743975459880860
 Transform:
   m_ObjectHideFlags: 0
