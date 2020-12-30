@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class CheckersBoard : MonoBehaviour
 {
-    private Piece selectedPawn;
     public int BlackLeft;
     public int WhiteLeft;
     public int BlackKings;
     public int WhiteKings;
+
     public Piece[,] Board;
+    private Piece selectedPawn;
+
     private Vector2 mouseOver;
     private Vector3 boardOffset = new Vector3(-4f, 0, -4f);
-    private Vector3 pieceOffset = new Vector3(0.5f, 0, 0.5f);
 
     public GameObject WhitePiecePrefab;
     public GameObject BlackPiecePrefab;
@@ -39,7 +40,7 @@ public class CheckersBoard : MonoBehaviour
 
     public void Update()
     {
-        Print();
+
     }
 
     public void CreateBoard()
@@ -89,7 +90,6 @@ public class CheckersBoard : MonoBehaviour
         CheckMousePostition();
         if (selectedPawn != null) 
         {
-            //MakeKing(selectedPawn.Row, selectedPawn.Col);
             ChangeMaterial(selectedPawn);
         }
 
@@ -106,8 +106,6 @@ public class CheckersBoard : MonoBehaviour
             mouseOver.x = (int)(hit.point.x - boardOffset.x);
             mouseOver.y = (int)(hit.point.z - boardOffset.z);
             selectedPawn = Board[(int)mouseOver.y, (int)mouseOver.x];
-            if (selectedPawn == null)
-                Debug.Log("Co do kurwy : ");
         }
         else
         {
@@ -119,17 +117,17 @@ public class CheckersBoard : MonoBehaviour
 
     private void GeneratePiece(int x, int y, int color)
     {
-        GameObject go = null;
+        GameObject gameObject;
         if (color == 1)
-            go = Instantiate(BlackPiecePrefab);
+            gameObject = Instantiate(BlackPiecePrefab);
         else if (color == 2)
-            go = Instantiate(WhitePiecePrefab);
+            gameObject = Instantiate(WhitePiecePrefab);
         else
             return;
 
-        go.transform.SetParent(transform, true);
-        go.transform.localScale = new Vector3(1, 1, 1);
-        Board[x, y] = new Piece(x, y, color, go);
+        gameObject.transform.SetParent(transform, true);
+        gameObject.transform.localScale = new Vector3(1, 1, 1);
+        Board[x, y] = new Piece(x, y, color, gameObject);
     }
 
     private void MakeKing(int x, int y)
@@ -140,44 +138,34 @@ public class CheckersBoard : MonoBehaviour
         }
 
         Board[x, y].King = true;
-        Destroy(Board[x, y].Go);
+        Destroy(Board[x, y].PieceGameObject);
         if (Board[x, y].Color == 1)
-            Board[x, y].Go = Instantiate(BlackKingPrefab);
+            Board[x, y].PieceGameObject = Instantiate(BlackKingPrefab);
         else if (Board[x, y].Color == 2)
-            Board[x, y].Go = Instantiate(WhiteKingPrefab);
+            Board[x, y].PieceGameObject = Instantiate(WhiteKingPrefab);
         else
             return;
 
-        Board[x, y].Go.transform.SetParent(transform, true);
-        Board[x, y].Go.transform.localScale = new Vector3(1, 1, 1);
+        Board[x, y].PieceGameObject.transform.SetParent(transform, true);
+        Board[x, y].PieceGameObject.transform.localScale = new Vector3(1, 1, 1);
         Board[x, y].MovePiece();
-    }
-
-    private void Print()
-    {
-        for (int i=0; i<8; i++)
-        {
-            for (int j=0; j<8; j++)
-                if (Board[i, j] != null)
-                    Board[i, j].MovePiece();
-        }
     }
 
     private void ChangeMaterial(Piece selected)
     {
         if( selected.Active && selected.Color == 2)
         {
-            selected.Go.GetComponent<Renderer>().material = whitePieceMaterial;
+            selected.PieceGameObject.GetComponent<Renderer>().material = whitePieceMaterial;
             selected.Active = false;
         }
         else if(selected.Active && selected.Color == 1)
         {
-            selected.Go.GetComponent<Renderer>().material = blackPieceMaterial;
+            selected.PieceGameObject.GetComponent<Renderer>().material = blackPieceMaterial;
             selected.Active = false;
         }
         else 
         {
-            selected.Go.GetComponent<Renderer>().material = chosenPieceMaterial;
+            selected.PieceGameObject.GetComponent<Renderer>().material = chosenPieceMaterial;
             selected.Active = true;
         }
     }

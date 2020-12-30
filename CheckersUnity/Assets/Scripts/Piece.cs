@@ -5,21 +5,25 @@ using UnityEngine;
 public class Piece
 {
     public int Row, Col;
-    public int Color;
-    public bool Active;
-    public bool King;
-    public int Direction;
-    private Vector3 boardOffset = new Vector3(-4f, 0, -4f);
-    private Vector3 pieceOffset = new Vector3(0.5f, 0, 0.5f);
-    public GameObject Go;
     private float posX, posZ;
 
-    public Piece(int row, int col, int color, GameObject go)
+    public int Color;
+    public int Direction;
+
+    public bool Active;
+    public bool King;
+
+    private Vector3 boardOffset = new Vector3(-4f, 0, -4f);
+    private Vector3 pieceOffset = new Vector3(0.5f, 0, 0.5f);
+
+    public GameObject PieceGameObject;
+
+    public Piece(int row, int col, int color, GameObject gameObjecty)
     {
         Row = row;
         Col = col;
         Color = color;
-        Go = go;
+        PieceGameObject = gameObjecty;
         King = false;
         Active = false;
         if (color == 1)
@@ -45,6 +49,6 @@ public class Piece
     public void MovePiece()
     {
         calcPosition();
-        Go.transform.position = ((Vector3.right * posX) + (Vector3.forward * posZ) + boardOffset + pieceOffset);
+        PieceGameObject.transform.position = ((Vector3.right * posX) + (Vector3.forward * posZ) + boardOffset + pieceOffset);
     }
 }
