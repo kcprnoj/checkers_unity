@@ -25,6 +25,9 @@ public class CheckersBoard : MonoBehaviour
     public Material blackPieceMaterial;
     public Material chosenPieceMaterial;
 
+    public AudioSource skipPieceSound;
+    public AudioSource movePieceSound;
+
     Game CheckersGame;
 
     private List<Piece> possibleMoves;
@@ -80,6 +83,7 @@ public class CheckersBoard : MonoBehaviour
 
     public void Move(Piece piece, int row, int col)
     {
+        movePieceSound.Play();
         Piece temp = Board[piece.Row, piece.Col];
         Board[piece.Row, piece.Col] = Board[row, col];
         Board[row, col] = temp;
@@ -218,6 +222,7 @@ public class CheckersBoard : MonoBehaviour
 
         foreach(Piece skip in skipped)
         {
+            skipPieceSound.Play();
             Destroy(skip.PieceGameObject);
             Board[skip.Row, skip.Col] = null;
             if(skip.Color == PieceColor.Black)
