@@ -135,8 +135,6 @@ public class CheckersBoard : MonoBehaviour
             Board[x, y].PieceGameObject = Instantiate(BlackKingPrefab);
         else if (Board[x, y].Color == PieceColor.White)
             Board[x, y].PieceGameObject = Instantiate(WhiteKingPrefab);
-        else
-            return;
 
         Board[x, y].PieceGameObject.transform.SetParent(transform, true);
         Board[x, y].PieceGameObject.transform.localScale = new Vector3(1, 1, 1);

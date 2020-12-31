@@ -28,6 +28,7 @@ public class Game
             if(!Move(row, col))
             {
                 Board.ChangeMaterial(Board.SelectedPawn, false);
+                Board.DeleteValidMoves();
                 Board.SelectedPawn = null;
                 Select(row, col);
             }
