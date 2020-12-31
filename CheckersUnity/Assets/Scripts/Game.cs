@@ -130,22 +130,22 @@ public class Game
                 else
                     moves.Add(new KeyValuePair<int, int>(i, left), last);
 
-                if (last != null)
+                if (last.Count != 0)
                 {
                     int row;
                     if (step == -1)
-                        row = System.Math.Max(i + 3, 0);
+                        row = System.Math.Max(i - 3, 0);
                     else
-                        row = System.Math.Min(i - 3, 8);
+                        row = System.Math.Min(i + 3, 8);
                     AddRange(moves, TraverseLeft(i + step, row, step, color, left - 1, last));
                     AddRange(moves, TraverseRight(i + step, row, step, color, left + 1, last));
-                    break;
                 }
-                else if (current.Color == color)
-                    break;
-                else
-                    last = new List<Piece>() { current };
+                break;
             }
+            else if (current.Color == color)
+                break;
+            else
+                last = new List<Piece>() { current };
             left--;
         }
 
@@ -183,22 +183,22 @@ public class Game
                 else
                     moves.Add(new KeyValuePair<int, int>(i, right), last);
 
-                if (last != null)
+                if (last.Count != 0)
                 {
                     int row;
                     if (step == -1)
-                        row = System.Math.Max(i + 3, 0);
+                        row = System.Math.Max(i - 3, 0);
                     else
-                        row = System.Math.Min(i - 3, 8);
+                        row = System.Math.Min(i + 3, 8);
                     AddRange(moves, TraverseLeft(i + step, row, step, color, right - 1, last));
                     AddRange(moves, TraverseRight(i + step, row, step, color, right + 1, last));
-                    break;
                 }
-                else if (current.Color == color)
-                    break;
-                else
-                    last = new List<Piece>() { current };
+                break;
             }
+            else if (current.Color == color)
+                break;
+            else
+                last = new List<Piece>() { current };
             right++;
         }
 
