@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PieceColor
+{
+    White,
+    Black
+}
+
 public class Piece
 {
     public int Row, Col;
     private float posX, posZ;
 
-    public int Color;
-    public int Direction;
+    public PieceColor Color;
 
     public bool Active;
     public bool King;
@@ -18,7 +23,15 @@ public class Piece
 
     public GameObject PieceGameObject;
 
-    public Piece(int row, int col, int color, GameObject gameObjecty)
+    public Piece(int row, int col, GameObject gameObject)
+    {
+        Row = row;
+        Col = col;
+        PieceGameObject = gameObject;
+        MovePiece();
+    }
+
+    public Piece(int row, int col, PieceColor color, GameObject gameObjecty)
     {
         Row = row;
         Col = col;
@@ -26,10 +39,6 @@ public class Piece
         PieceGameObject = gameObjecty;
         King = false;
         Active = false;
-        if (color == 1)
-            Direction = 1;
-        else
-            Direction = -1;
         MovePiece();
     }
 
@@ -42,8 +51,8 @@ public class Piece
 
     public void calcPosition()
     {
-        posX = Col;
-        posZ = Row;
+        posX = Row;
+        posZ = Col;
     }
 
     public void MovePiece()

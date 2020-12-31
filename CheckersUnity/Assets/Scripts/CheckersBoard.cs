@@ -10,7 +10,7 @@ public class CheckersBoard : MonoBehaviour
     public int WhiteKings;
 
     public Piece[,] Board;
-    private Piece selectedPawn;
+    public Piece SelectedPawn;
 
     private Vector2 mouseOver;
     private Vector3 boardOffset = new Vector3(-4f, 0, -4f);
@@ -19,10 +19,15 @@ public class CheckersBoard : MonoBehaviour
     public GameObject BlackPiecePrefab;
     public GameObject WhiteKingPrefab;
     public GameObject BlackKingPrefab;
+    public GameObject InvisiblePiecePrefab;
 
     public Material whitePieceMaterial;
     public Material blackPieceMaterial;
     public Material chosenPieceMaterial;
+
+    Game CheckersGame;
+
+    private List<Piece> possibleMoves;
 
     public void Awake()
     {
@@ -31,16 +36,16 @@ public class CheckersBoard : MonoBehaviour
         BlackKings = 0;
         WhiteKings = 0;
         Board = new Piece[8, 8];
-    }
-
-    public void Start()
-    {
         CreateBoard();
+        CheckersGame = new Game(this);
+        possibleMoves = new List<Piece>();
     }
 
-    public void Update()
+    public void OnMouseDown()
     {
-
+        CheckMousePostition();
+        CheckersGame.Select((int)mouseOver.x, (int)mouseOver.y);
+        Debug.Log("Turn : " + CheckersGame.Turn);
     }
 
     public void CreateBoard()
@@ -51,12 +56,12 @@ public class CheckersBoard : MonoBehaviour
             {
                 Board[i, j] = null;
 
-                if ((i + j) % 2 == 0)
+                if ((i + j) % 2 == 1)
                 {
                     if (i < 3)
-                        GeneratePiece(i, j, 1);
+                        GeneratePiece(i, j, PieceColor.White);
                     else if (i > 4)
-                        GeneratePiece(i, j, 2);
+                        GeneratePiece(i, j, PieceColor.Black);
                 }
             }
         }
@@ -64,6 +69,7 @@ public class CheckersBoard : MonoBehaviour
 
     public Piece GetPiece(int row, int col)
     {
+        Debug.Log(row + " " + col);
         return Board[row, col];
     }
 
@@ -75,24 +81,14 @@ public class CheckersBoard : MonoBehaviour
 
         piece.Move(row, col);
 
-        if (row == 8 || row == 0)
+        if (row == 7 || row == 0)
         {
             MakeKing(row, col);
-            if (piece.Color == 1)
+            if (piece.Color == PieceColor.Black)
                 BlackKings++;
             else
                 WhiteKings++;
         }
-    }
-
-    public void OnMouseDown()
-    {
-        CheckMousePostition();
-        if (selectedPawn != null) 
-        {
-            ChangeMaterial(selectedPawn);
-        }
-
     }
 
     private void CheckMousePostition()
@@ -100,27 +96,23 @@ public class CheckersBoard : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 50.0f, LayerMask.GetMask("Board")))
         {
-            if (selectedPawn != null)
-                ChangeMaterial(selectedPawn);
-
             mouseOver.x = (int)(hit.point.x - boardOffset.x);
             mouseOver.y = (int)(hit.point.z - boardOffset.z);
-            selectedPawn = Board[(int)mouseOver.y, (int)mouseOver.x];
         }
         else
         {
             mouseOver.x = -1;
             mouseOver.y = -1;
         }
-        Debug.Log("Mouse location : " + mouseOver + "  " + selectedPawn);
+        Debug.Log("Mouse location : " + mouseOver);
     }
 
-    private void GeneratePiece(int x, int y, int color)
+    private void GeneratePiece(int x, int y, PieceColor color)
     {
         GameObject gameObject;
-        if (color == 1)
+        if (color == PieceColor.Black)
             gameObject = Instantiate(BlackPiecePrefab);
-        else if (color == 2)
+        else if (color == PieceColor.White)
             gameObject = Instantiate(WhitePiecePrefab);
         else
             return;
@@ -139,9 +131,9 @@ public class CheckersBoard : MonoBehaviour
 
         Board[x, y].King = true;
         Destroy(Board[x, y].PieceGameObject);
-        if (Board[x, y].Color == 1)
+        if (Board[x, y].Color == PieceColor.Black)
             Board[x, y].PieceGameObject = Instantiate(BlackKingPrefab);
-        else if (Board[x, y].Color == 2)
+        else if (Board[x, y].Color == PieceColor.White)
             Board[x, y].PieceGameObject = Instantiate(WhiteKingPrefab);
         else
             return;
@@ -151,14 +143,14 @@ public class CheckersBoard : MonoBehaviour
         Board[x, y].MovePiece();
     }
 
-    private void ChangeMaterial(Piece selected)
+    public void ChangeMaterial(Piece selected)
     {
-        if( selected.Active && selected.Color == 2)
+        if ( selected.Active && selected.Color == PieceColor.White)
         {
             selected.PieceGameObject.GetComponent<Renderer>().material = whitePieceMaterial;
             selected.Active = false;
         }
-        else if(selected.Active && selected.Color == 1)
+        else if (selected.Active && selected.Color == PieceColor.Black)
         {
             selected.PieceGameObject.GetComponent<Renderer>().material = blackPieceMaterial;
             selected.Active = false;
@@ -167,6 +159,52 @@ public class CheckersBoard : MonoBehaviour
         {
             selected.PieceGameObject.GetComponent<Renderer>().material = chosenPieceMaterial;
             selected.Active = true;
+        }
+    }
+
+    public void ResetBoard()
+    {
+        SelectedPawn = null;
+        for (int i=0; i<8; i++)
+        {
+            for (int j=0; j<8; j++)
+            {
+                if (Board[i, j] != null)
+                {
+                    Destroy(Board[i, j].PieceGameObject);
+                }
+            }
+        }
+        CreateBoard();
+    }
+
+    public void DrawValidMoves()
+    {
+        DeleteValidMoves();
+        if (CheckersGame.ValidMoves == null)
+            return;
+        foreach(KeyValuePair<KeyValuePair<int, int>, List<Piece>> move in CheckersGame.ValidMoves)
+        {
+            int row = move.Key.Key;
+            int col = move.Key.Value;
+            GenerateInvisiblePiece(row, col);
+        }
+    }
+
+    private void GenerateInvisiblePiece(int row, int col)
+    {
+        GameObject gameObject = Instantiate(InvisiblePiecePrefab);
+        gameObject.transform.SetParent(transform, true);
+        gameObject.transform.localScale = new Vector3(1, 1, 1);
+        possibleMoves.Add(new Piece(row, col, gameObject));
+    }
+
+    public void DeleteValidMoves()
+    {
+        for(int i = possibleMoves.Count-1; i >= 0; i--)
+        {
+            Destroy(possibleMoves[i].PieceGameObject);
+            possibleMoves.RemoveAt(i);
         }
     }
 }
