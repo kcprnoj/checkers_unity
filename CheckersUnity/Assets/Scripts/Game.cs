@@ -73,6 +73,7 @@ public class Game
 
         Board.DeleteValidMoves();
         Board.ChangeMaterial(Board.SelectedPawn, false);
+        Board.CheckWinner();
     }
 
     private bool IsValidMove(int row, int col)

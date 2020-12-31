@@ -31,14 +31,19 @@ public class CheckersBoard : MonoBehaviour
 
     public void Awake()
     {
+        Init();
+    }
+
+    private void Init()
+    {
         BlackLeft = 12;
         WhiteLeft = 12;
         BlackKings = 0;
         WhiteKings = 0;
         Board = new Piece[8, 8];
-        CreateBoard();
         CheckersGame = new Game(this);
         possibleMoves = new List<Piece>();
+        CreateBoard();
     }
 
     public void OnMouseDown()
@@ -173,7 +178,7 @@ public class CheckersBoard : MonoBehaviour
                 }
             }
         }
-        CreateBoard();
+        Init();
     }
 
     public void DrawValidMoves()
@@ -228,5 +233,16 @@ public class CheckersBoard : MonoBehaviour
                     WhiteKings--;
             }
         }
+    }
+
+    public void CheckWinner()
+    {
+        if(WhiteLeft == 0)
+            Debug.Log("Black won!");
+        else if(BlackLeft == 0)
+            Debug.Log("White won !");
+        else
+            return;
+        ResetBoard();
     }
 }
