@@ -27,6 +27,7 @@ public class Game
         {
             if(!Move(row, col))
             {
+                Board.ChangeMaterial(Board.SelectedPawn, false);
                 Board.SelectedPawn = null;
                 Select(row, col);
             }
