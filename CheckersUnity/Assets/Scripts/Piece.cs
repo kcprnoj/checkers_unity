@@ -15,7 +15,6 @@ public class Piece
 
     public PieceColor Color;
 
-    public bool Active;
     public bool King;
 
     private Vector3 boardOffset = new Vector3(-4f, 0, -4f);
@@ -38,7 +37,6 @@ public class Piece
         Color = color;
         PieceGameObject = gameObjecty;
         King = false;
-        Active = false;
         MovePiece();
     }
 

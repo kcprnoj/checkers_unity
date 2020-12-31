@@ -143,22 +143,22 @@ public class CheckersBoard : MonoBehaviour
         Board[x, y].MovePiece();
     }
 
-    public void ChangeMaterial(Piece selected)
+    public void ChangeMaterial(Piece piece, bool selected)
     {
-        if ( selected.Active && selected.Color == PieceColor.White)
+        if (piece == null)
+            return;
+
+        if (!selected && piece.Color == PieceColor.White)
         {
-            selected.PieceGameObject.GetComponent<Renderer>().material = whitePieceMaterial;
-            selected.Active = false;
+            piece.PieceGameObject.GetComponent<Renderer>().material = whitePieceMaterial;
         }
-        else if (selected.Active && selected.Color == PieceColor.Black)
+        else if (!selected && piece.Color == PieceColor.Black)
         {
-            selected.PieceGameObject.GetComponent<Renderer>().material = blackPieceMaterial;
-            selected.Active = false;
+            piece.PieceGameObject.GetComponent<Renderer>().material = blackPieceMaterial;
         }
         else 
         {
-            selected.PieceGameObject.GetComponent<Renderer>().material = chosenPieceMaterial;
-            selected.Active = true;
+            piece.PieceGameObject.GetComponent<Renderer>().material = chosenPieceMaterial;
         }
     }
 

@@ -37,6 +37,7 @@ public class Game
         {
             Board.SelectedPawn = piece;
             ValidMoves = GetValidMoves(piece);
+            Board.ChangeMaterial(piece, true);
             Board.DrawValidMoves();
             return true;
         }
@@ -68,6 +69,7 @@ public class Game
             Turn = PieceColor.Black;
 
         Board.DeleteValidMoves();
+        Board.ChangeMaterial(Board.SelectedPawn, false);
     }
 
     private bool IsValidMove(int row, int col)
