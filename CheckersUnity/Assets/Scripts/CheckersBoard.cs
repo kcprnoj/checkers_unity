@@ -207,4 +207,28 @@ public class CheckersBoard : MonoBehaviour
             possibleMoves.RemoveAt(i);
         }
     }
+
+    public void RemovePieces(List<Piece> skipped)
+    {
+        if (skipped == null)
+            return;
+
+        foreach(Piece skip in skipped)
+        {
+            Destroy(skip.PieceGameObject);
+            Board[skip.Row, skip.Col] = null;
+            if(skip.Color == PieceColor.Black)
+            {
+                BlackLeft--;
+                if (skip.King)
+                    BlackKings--;
+            }
+            else
+            {
+                WhiteLeft--;
+                if (skip.King)
+                    WhiteKings--;
+            }
+        }
+    }
 }

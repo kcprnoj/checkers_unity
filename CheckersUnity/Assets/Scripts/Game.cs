@@ -52,6 +52,7 @@ public class Game
         if (Board.SelectedPawn != null && piece == null && IsValidMove(row, col))
         {
             Board.Move(Board.SelectedPawn, row, col);
+            Board.RemovePieces(ValidMoves[new KeyValuePair<int, int>(row, col)]);
             ChangeTurn();
         }
         else
