@@ -690,7 +690,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 383232456}
-  - component: {fileID: 383232457}
   m_Layer: 5
   m_Name: MainMenu
   m_TagString: Untagged
@@ -721,18 +720,6 @@ RectTransform:
   m_AnchoredPosition: {x: 334, y: -138.3}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &383232457
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 383232455}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29aac460d29f15f42a049fb9a6cd09e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &542381948
 GameObject:
   m_ObjectHideFlags: 0
@@ -1104,6 +1091,7 @@ GameObject:
   - component: {fileID: 1172967046}
   - component: {fileID: 1172967045}
   - component: {fileID: 1172967044}
+  - component: {fileID: 1172967048}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1194,6 +1182,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1172967048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1172967043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29aac460d29f15f42a049fb9a6cd09e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1181555514
 GameObject:
   m_ObjectHideFlags: 0
@@ -1483,7 +1483,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 383232457}
+      - m_Target: {fileID: 1172967048}
         m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
@@ -1612,7 +1612,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1330278586}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1172967048}
+        m_MethodName: PlaySingleplayerGameBlackSide
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1330278586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2249,8 +2260,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1376049454}
-        m_MethodName: PlaySingleplayerGame
+      - m_Target: {fileID: 1172967048}
+        m_MethodName: PlaySingleplayerGameWhiteSide
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
