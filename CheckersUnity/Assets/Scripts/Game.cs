@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class Game
 {
     public CheckersBoard Board;
     public PieceColor Turn;
+    public PieceColor Player;
     public Dictionary<KeyValuePair<int, int>, List<Piece>> ValidMoves;
 
     public Game(CheckersBoard board)
