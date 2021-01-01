@@ -134,7 +134,7 @@ public class CheckersBoard : MonoBehaviour
 
     private void MakeKing(int x, int y)
     {
-        if(Board[x, y] == null)
+        if (Board[x, y] == null)
         {
             return;
         }
@@ -191,7 +191,7 @@ public class CheckersBoard : MonoBehaviour
         DeleteValidMoves();
         if (CheckersGame.ValidMoves == null)
             return;
-        foreach(KeyValuePair<KeyValuePair<int, int>, List<Piece>> move in CheckersGame.ValidMoves)
+        foreach (KeyValuePair<KeyValuePair<int, int>, List<Piece>> move in CheckersGame.ValidMoves)
         {
             int row = move.Key.Key;
             int col = move.Key.Value;
@@ -209,7 +209,7 @@ public class CheckersBoard : MonoBehaviour
 
     public void DeleteValidMoves()
     {
-        for(int i = possibleMoves.Count-1; i >= 0; i--)
+        for (int i = possibleMoves.Count-1; i >= 0; i--)
         {
             Destroy(possibleMoves[i].PieceGameObject);
             possibleMoves.RemoveAt(i);
@@ -221,7 +221,7 @@ public class CheckersBoard : MonoBehaviour
         if (skipped == null)
             return;
 
-        foreach(Piece skip in skipped)
+        foreach (Piece skip in skipped)
         {
             skipPieceSound.Play();
             Destroy(skip.PieceGameObject);
@@ -243,9 +243,9 @@ public class CheckersBoard : MonoBehaviour
 
     public void CheckWinner()
     {
-        if(WhiteLeft == 0)
+        if (WhiteLeft == 0)
             Debug.Log("Black won!");
-        else if(BlackLeft == 0)
+        else if (BlackLeft == 0)
             Debug.Log("White won !");
         else
             return;
@@ -254,7 +254,7 @@ public class CheckersBoard : MonoBehaviour
 
     private void ChooseCamera()
     {
-        if(UIData.Color == "black")
+        if (UIData.Color == "black")
         {
             WhiteCamera.SetActive(false);
             BlackCamera.SetActive(true);
