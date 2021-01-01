@@ -58,5 +58,7 @@ public class Piece
     {
         calcPosition();
         PieceGameObject.transform.position = ((Vector3.right * posX) + (Vector3.forward * posZ) + boardOffset + pieceOffset);
+        float yRotation =  Camera.main.transform.eulerAngles.y;
+        PieceGameObject.transform.eulerAngles = new Vector3(PieceGameObject.transform.eulerAngles.x, -yRotation, PieceGameObject.transform.eulerAngles.z);
     }
 }
