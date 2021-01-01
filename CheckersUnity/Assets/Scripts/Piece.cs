@@ -21,6 +21,7 @@ public class Piece
     private Vector3 pieceOffset = new Vector3(0.5f, 0, 0.5f);
 
     public GameObject PieceGameObject;
+    public Dictionary<KeyValuePair<int, int>, List<Piece>> ValidMoves;
 
     public Piece(int row, int col, GameObject gameObject)
     {

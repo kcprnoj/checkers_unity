@@ -23,6 +23,8 @@ public class Game
 
     public bool Select(int row, int col)
     {
+        UpdateValidMoves();
+
         if(Board.SelectedPawn != null)
         {
             if(!Move(row, col))
@@ -38,7 +40,7 @@ public class Game
         if (piece != null && piece.Color == Turn)
         {
             Board.SelectedPawn = piece;
-            ValidMoves = GetValidMoves(piece);
+            ValidMoves = piece.ValidMoves;
             Board.ChangeMaterial(piece, true);
             Board.DrawValidMoves();
             return true;
@@ -74,6 +76,19 @@ public class Game
         Board.DeleteValidMoves();
         Board.ChangeMaterial(Board.SelectedPawn, false);
         Board.CheckWinner();
+        Debug.Log("Turn : " + Turn);
+    }
+
+    private void UpdateValidMoves()
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                if (Board.GetPiece(i, j) != null && Board.GetPiece(i, j).Color == Turn)
+                    Board.GetPiece(i, j).ValidMoves = GetValidMoves(Board.GetPiece(i, j));
+            }
+        }
     }
 
     private bool IsValidMove(int row, int col)

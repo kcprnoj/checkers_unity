@@ -53,7 +53,6 @@ public class CheckersBoard : MonoBehaviour
     {
         CheckMousePostition();
         CheckersGame.Select((int)mouseOver.x, (int)mouseOver.y);
-        Debug.Log("Turn : " + CheckersGame.Turn);
     }
 
     public void CreateBoard()
