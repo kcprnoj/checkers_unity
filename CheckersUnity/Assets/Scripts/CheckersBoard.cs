@@ -105,6 +105,11 @@ public class CheckersBoard : MonoBehaviour
         {
             mouseOver.x = (int)(hit.point.x - boardOffset.x);
             mouseOver.y = (int)(hit.point.z - boardOffset.z);
+            if (Camera.main.transform.eulerAngles.y > 0)
+            {
+                mouseOver.x = 7 - mouseOver.x;
+                mouseOver.y = 7 - mouseOver.y;
+            }
         }
         else
         {
