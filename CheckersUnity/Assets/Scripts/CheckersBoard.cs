@@ -76,7 +76,6 @@ public class CheckersBoard : MonoBehaviour
 
     public Piece GetPiece(int row, int col)
     {
-        Debug.Log(row + " " + col);
         return Board[row, col];
     }
 

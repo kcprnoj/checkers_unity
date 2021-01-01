@@ -24,8 +24,7 @@ public class Game
     public bool Select(int row, int col)
     {
         UpdateValidMoves();
-
-        if(Board.SelectedPawn != null)
+        if (Board.SelectedPawn != null)
         {
             if(!Move(row, col))
             {
@@ -76,18 +75,72 @@ public class Game
         Board.DeleteValidMoves();
         Board.ChangeMaterial(Board.SelectedPawn, false);
         Board.CheckWinner();
+        UpdateValidMoves();
         Debug.Log("Turn : " + Turn);
     }
 
     private void UpdateValidMoves()
     {
+        bool skip = false;
         for (int i = 0; i < 8; i++)
         {
             for (int j = 0; j < 8; j++)
             {
-                if (Board.GetPiece(i, j) != null && Board.GetPiece(i, j).Color == Turn)
-                    Board.GetPiece(i, j).ValidMoves = GetValidMoves(Board.GetPiece(i, j));
+                Piece piece = Board.GetPiece(i, j);
+                if (piece != null && piece.Color == Turn)
+                {
+                    piece.ValidMoves = GetValidMoves(piece);
+                    if (HasSkip(piece))
+                        skip = true;
+                }
             }
+        }
+
+        if (skip)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    DeleteMovesWithoutSkip(Board.GetPiece(i, j));
+                }
+            }
+        }
+    }
+
+    private bool HasSkip(Piece piece)
+    {
+        if (piece.ValidMoves == null || piece == null)
+            return false;
+
+        foreach (KeyValuePair<KeyValuePair<int, int>, List<Piece>> move in piece.ValidMoves)
+        {
+            if (move.Value == null)
+                continue;
+            else if (move.Value.Count != 0)
+                return true;
+        }
+
+        return false;
+    }
+
+    private void DeleteMovesWithoutSkip(Piece piece)
+    {
+        List<KeyValuePair<int, int>> movesToDelete = new List<KeyValuePair<int, int>>();
+        if (piece == null || piece.ValidMoves == null)
+        {
+            return;
+        }
+
+        foreach (KeyValuePair<KeyValuePair<int, int>, List<Piece>> move in piece.ValidMoves)
+        {
+            if (move.Value == null || move.Value.Count == 0)
+                movesToDelete.Add(move.Key);
+        }
+
+        foreach (KeyValuePair<int, int> move in movesToDelete)
+        {
+            piece.ValidMoves.Remove(move);
         }
     }
 
