@@ -14,6 +14,7 @@ public class CheckersBoard : MonoBehaviour
 
     private Vector2 mouseOver;
     private Vector3 boardOffset = new Vector3(-4f, 0, -4f);
+    private Vector3 pieceOffset = new Vector3(0.5f, 0, 0.5f);
 
     public GameObject WhitePiecePrefab;
     public GameObject BlackPiecePrefab;
@@ -35,7 +36,7 @@ public class CheckersBoard : MonoBehaviour
 
     Game CheckersGame;
 
-    private List<Piece> possibleMoves;
+    private List<GameObject> possibleMoves;
 
     public void Awake()
     {
@@ -50,7 +51,7 @@ public class CheckersBoard : MonoBehaviour
         WhiteKings = 0;
         Board = new Piece[8, 8];
         CheckersGame = new Game(this);
-        possibleMoves = new List<Piece>();
+        possibleMoves = new List<GameObject>();
         CreateBoard();
         ChooseCamera();
     }
@@ -212,23 +213,24 @@ public class CheckersBoard : MonoBehaviour
         {
             int row = move.Key.Key;
             int col = move.Key.Value;
-            GenerateInvisiblePiece(row, col);
+            GeneratePosibleMove(row, col);
         }
     }
 
-    private void GenerateInvisiblePiece(int row, int col)
+    private void GeneratePosibleMove(int row, int col)
     {
         GameObject gameObject = Instantiate(InvisiblePiecePrefab);
         gameObject.transform.SetParent(transform, true);
         gameObject.transform.localScale = new Vector3(1, 1, 1);
-        possibleMoves.Add(new Piece(row, col, gameObject));
+        MovePiece(row, col, gameObject);
+        possibleMoves.Add(gameObject);
     }
 
     public void DeleteValidMoves()
     {
         for (int i = possibleMoves.Count-1; i >= 0; i--)
         {
-            Destroy(possibleMoves[i].PieceGameObject);
+            Destroy(possibleMoves[i]);
             possibleMoves.RemoveAt(i);
         }
     }
@@ -307,4 +309,12 @@ public class CheckersBoard : MonoBehaviour
             }
         }
     }
+
+    public void MovePiece(int row, int col, GameObject gameObject)
+    {
+        gameObject.transform.position = ((Vector3.right * row) + (Vector3.forward * col) + boardOffset + pieceOffset);
+        float yRotation = Camera.main.transform.eulerAngles.y;
+        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, -yRotation, gameObject.transform.eulerAngles.z);
+    }
+
 }
