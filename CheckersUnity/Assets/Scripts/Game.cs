@@ -67,6 +67,7 @@ public class Game
 
     private void ChangeTurn()
     {
+        Board.ShowChosenPieces(false);
         if (Turn == PieceColor.Black)
             Turn = PieceColor.White;
         else
@@ -106,6 +107,8 @@ public class Game
                 }
             }
         }
+
+        Board.ShowChosenPieces(true);
     }
 
     private bool HasSkip(Piece piece)

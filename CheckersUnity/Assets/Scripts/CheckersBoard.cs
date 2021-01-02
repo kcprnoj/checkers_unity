@@ -192,7 +192,7 @@ public class CheckersBoard : MonoBehaviour
         DeleteValidMoves();
         if (CheckersGame.ValidMoves == null)
             return;
-        foreach(KeyValuePair<KeyValuePair<int, int>, List<Piece>> move in CheckersGame.ValidMoves)
+        foreach (KeyValuePair<KeyValuePair<int, int>, List<Piece>> move in CheckersGame.ValidMoves)
         {
             int row = move.Key.Key;
             int col = move.Key.Value;
@@ -210,7 +210,7 @@ public class CheckersBoard : MonoBehaviour
 
     public void DeleteValidMoves()
     {
-        for(int i = possibleMoves.Count-1; i >= 0; i--)
+        for (int i = possibleMoves.Count-1; i >= 0; i--)
         {
             Destroy(possibleMoves[i].PieceGameObject);
             possibleMoves.RemoveAt(i);
@@ -246,18 +246,15 @@ public class CheckersBoard : MonoBehaviour
     {
         if(WhiteLeft == 0)
         {
-            Debug.Log("Black won!");
             UIData.Winner = "black";
         }
         else if(BlackLeft == 0)
         {
-            Debug.Log("White won !");
             UIData.Winner = "white";
         }
         else
             return;
         SceneManager.LoadScene(2);
-        //ResetBoard();
     }
 
     private void ChooseCamera()
@@ -271,6 +268,27 @@ public class CheckersBoard : MonoBehaviour
         {
             WhiteCamera.SetActive(true);
             BlackCamera.SetActive(false);
+        }
+    }
+
+    public void ShowChosenPieces(bool show)
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                if (Board[i, j] != null && Board[i, j].Color == CheckersGame.Turn)
+                {
+                    if (show && (Board[i, j].ValidMoves != null && Board[i, j].ValidMoves.Count != 0))
+                    {
+                        ChangeMaterial(Board[i, j], true);
+                    }
+                    else
+                    {
+                        ChangeMaterial(Board[i, j], false);
+                    }
+                }
+            }
         }
     }
 }
