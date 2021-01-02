@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CheckersBoard : MonoBehaviour
 {
@@ -244,12 +245,19 @@ public class CheckersBoard : MonoBehaviour
     public void CheckWinner()
     {
         if(WhiteLeft == 0)
+        {
             Debug.Log("Black won!");
+            UIData.Winner = "black";
+        }
         else if(BlackLeft == 0)
+        {
             Debug.Log("White won !");
+            UIData.Winner = "white";
+        }
         else
             return;
-        ResetBoard();
+        SceneManager.LoadScene(2);
+        //ResetBoard();
     }
 
     private void ChooseCamera()
