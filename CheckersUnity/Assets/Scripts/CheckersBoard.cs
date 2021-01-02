@@ -27,6 +27,8 @@ public class CheckersBoard : MonoBehaviour
     public Material whitePieceMaterial;
     public Material blackPieceMaterial;
     public Material chosenPieceMaterial;
+    public Material sideBlackPieceMaterial;
+    public Material sideWhitePieceMaterial;
 
     public AudioSource skipPieceSound;
     public AudioSource movePieceSound;
@@ -152,23 +154,37 @@ public class CheckersBoard : MonoBehaviour
         Board[x, y].MovePiece();
     }
 
-    public void ChangeMaterial(Piece piece, bool selected)
+    public void ChangeMaterial(Piece piece, bool selected, bool possibleMove)
     {
         if (piece == null)
             return;
 
         if (!selected && piece.Color == PieceColor.White)
         {
-            piece.PieceGameObject.GetComponent<Renderer>().material = whitePieceMaterial;
+            Material[] currentMaterial = piece.PieceGameObject.GetComponent<Renderer>().materials;
+            currentMaterial[0] = whitePieceMaterial;
+            currentMaterial[1] = sideWhitePieceMaterial;
+            piece.PieceGameObject.GetComponent<Renderer>().materials = currentMaterial;
         }
         else if (!selected && piece.Color == PieceColor.Black)
         {
-            piece.PieceGameObject.GetComponent<Renderer>().material = blackPieceMaterial;
+            Material[] currentMaterial = piece.PieceGameObject.GetComponent<Renderer>().materials;
+            currentMaterial[0] = blackPieceMaterial;
+            currentMaterial[1] = sideBlackPieceMaterial;
+            piece.PieceGameObject.GetComponent<Renderer>().materials = currentMaterial;
         }
         else 
         {
             piece.PieceGameObject.GetComponent<Renderer>().material = chosenPieceMaterial;
         }
+
+        if(possibleMove)
+        {
+            Material[] currentMaterial = piece.PieceGameObject.GetComponent<Renderer>().materials;
+            currentMaterial[1] = chosenPieceMaterial;
+            piece.PieceGameObject.GetComponent<Renderer>().materials = currentMaterial;
+        }
+            
     }
 
     public void ResetBoard()
@@ -281,11 +297,11 @@ public class CheckersBoard : MonoBehaviour
                 {
                     if (show && (Board[i, j].ValidMoves != null && Board[i, j].ValidMoves.Count != 0))
                     {
-                        ChangeMaterial(Board[i, j], true);
+                        ChangeMaterial(Board[i, j], false, true);
                     }
                     else
                     {
-                        ChangeMaterial(Board[i, j], false);
+                        ChangeMaterial(Board[i, j], false, false);
                     }
                 }
             }

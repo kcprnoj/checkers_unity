@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a9f69ff420aacd040835a9d88399cbdf
+guid: 18913577627da0a4d82d7cf5ea52e309
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
@@ -7,12 +7,12 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: BlackPawn
+      name: WhitePawn
     second: {fileID: 2100000, guid: ad5ccb71d7f2dc5499fa15ebe6f50035, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: BlackPawnSideColor
+      name: WhitePawnSideColor
     second: {fileID: 2100000, guid: 649ff586bf2c6fb47ba86787b9868ee3, type: 2}
   materials:
     materialImportMode: 1

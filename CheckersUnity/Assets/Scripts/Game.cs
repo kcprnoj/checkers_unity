@@ -28,7 +28,7 @@ public class Game
         {
             if(!Move(row, col))
             {
-                Board.ChangeMaterial(Board.SelectedPawn, false);
+                Board.ChangeMaterial(Board.SelectedPawn, false, false);
                 Board.DeleteValidMoves();
                 Board.SelectedPawn = null;
                 Select(row, col);
@@ -40,7 +40,7 @@ public class Game
         {
             Board.SelectedPawn = piece;
             ValidMoves = piece.ValidMoves;
-            Board.ChangeMaterial(piece, true);
+            Board.ChangeMaterial(piece, true, false);
             Board.DrawValidMoves();
             return true;
         }
@@ -74,7 +74,7 @@ public class Game
             Turn = PieceColor.Black;
 
         Board.DeleteValidMoves();
-        Board.ChangeMaterial(Board.SelectedPawn, false);
+        Board.ChangeMaterial(Board.SelectedPawn, false, false);
         Board.CheckWinner();
         UpdateValidMoves();
         Debug.Log("Turn : " + Turn);
