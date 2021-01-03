@@ -14,13 +14,6 @@ public class Game
         Turn = PieceColor.Black;
     }
 
-    public void ResetGame()
-    {
-        Board.ResetBoard();
-        Turn = PieceColor.Black;
-        ValidMoves = null;
-    }
-
     public bool Select(int row, int col)
     {
         UpdateValidMoves();

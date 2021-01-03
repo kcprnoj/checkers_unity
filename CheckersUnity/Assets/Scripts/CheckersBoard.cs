@@ -6,8 +6,6 @@ public class CheckersBoard : MonoBehaviour
 {
     public int BlackLeft;
     public int WhiteLeft;
-    public int BlackKings;
-    public int WhiteKings;
 
     public Piece[,] Board;
     public Piece SelectedPawn;
@@ -47,8 +45,6 @@ public class CheckersBoard : MonoBehaviour
     {
         BlackLeft = 12;
         WhiteLeft = 12;
-        BlackKings = 0;
-        WhiteKings = 0;
         Board = new Piece[8, 8];
         CheckersGame = new Game(this);
         possibleMoves = new List<GameObject>();
@@ -98,10 +94,6 @@ public class CheckersBoard : MonoBehaviour
         if (row == 7 || row == 0)
         {
             MakeKing(row, col);
-            if (piece.Color == PieceColor.Black)
-                BlackKings++;
-            else
-                WhiteKings++;
         }
     }
 
@@ -185,23 +177,6 @@ public class CheckersBoard : MonoBehaviour
             currentMaterial[1] = chosenPieceMaterial;
             piece.PieceGameObject.GetComponent<Renderer>().materials = currentMaterial;
         }
-            
-    }
-
-    public void ResetBoard()
-    {
-        SelectedPawn = null;
-        for (int i=0; i<8; i++)
-        {
-            for (int j=0; j<8; j++)
-            {
-                if (Board[i, j] != null)
-                {
-                    Destroy(Board[i, j].PieceGameObject);
-                }
-            }
-        }
-        Init();
     }
 
     public void DrawValidMoves()
@@ -248,25 +223,21 @@ public class CheckersBoard : MonoBehaviour
             if(skip.Color == PieceColor.Black)
             {
                 BlackLeft--;
-                if (skip.King)
-                    BlackKings--;
             }
             else
             {
                 WhiteLeft--;
-                if (skip.King)
-                    WhiteKings--;
             }
         }
     }
 
     public void CheckWinner()
     {
-        if(WhiteLeft == 0)
+        if(WhiteLeft <= 0)
         {
             UIData.Winner = "black";
         }
-        else if(BlackLeft == 0)
+        else if(BlackLeft <= 0)
         {
             UIData.Winner = "white";
         }
