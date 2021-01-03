@@ -38,11 +38,6 @@ public class CheckersBoard : MonoBehaviour
 
     public void Awake()
     {
-        Init();
-    }
-
-    private void Init()
-    {
         BlackLeft = 12;
         WhiteLeft = 12;
         Board = new Piece[8, 8];
@@ -54,8 +49,24 @@ public class CheckersBoard : MonoBehaviour
 
     public void OnMouseDown()
     {
-        CheckMousePostition();
-        CheckersGame.Select((int)mouseOver.x, (int)mouseOver.y);
+        if (CheckersGame.Turn == CheckersGame.Player)
+        {
+            CheckMousePostition();
+            CheckersGame.Select((int)mouseOver.x, (int)mouseOver.y);
+        }
+    }
+
+    public void Update()
+    {
+        if (CheckersGame.AI.Color == CheckersGame.Turn)
+        {
+            CheckersGame.UpdateValidMoves();
+            CheckersGame.AI.FindBestMove(Board);
+            KeyValuePair<KeyValuePair<int, int>, List<Piece>> move = CheckersGame.AI.BestMove;
+            Piece piece = CheckersGame.AI.BestPiece;
+            CheckersGame.Select(piece.Row, piece.Col);
+            CheckersGame.Select(move.Key.Key, move.Key.Value);
+        }
     }
 
     public void CreateBoard()

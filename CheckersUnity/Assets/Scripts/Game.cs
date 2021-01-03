@@ -7,11 +7,23 @@ public class Game
     public PieceColor Turn;
     public PieceColor Player;
     public Dictionary<KeyValuePair<int, int>, List<Piece>> ValidMoves;
+    public SimpleAlgoirthm AI;
 
     public Game(CheckersBoard board)
     {
         Board = board;
         Turn = PieceColor.Black;
+
+        if(UIData.Color == "black")
+        {
+            Player = PieceColor.Black;
+            AI = new SimpleAlgoirthm(PieceColor.White);
+        }
+        else
+        {
+            Player = PieceColor.White;
+            AI = new SimpleAlgoirthm(PieceColor.Black);
+        }
     }
 
     public bool Select(int row, int col)
@@ -73,7 +85,7 @@ public class Game
         Debug.Log("Turn : " + Turn);
     }
 
-    private void UpdateValidMoves()
+    public void UpdateValidMoves()
     {
         bool skip = false;
         for (int i = 0; i < 8; i++)
@@ -169,7 +181,7 @@ public class Game
         return moves;
     }
 
-    private Dictionary<KeyValuePair<int, int>, List<Piece>>
+    public Dictionary<KeyValuePair<int, int>, List<Piece>>
         TraverseLeft(int start, int stop, int step, PieceColor color, int left, List<Piece> skipped = null)
     {
         Dictionary<KeyValuePair<int, int>, List<Piece>> moves = new Dictionary<KeyValuePair<int, int>, List<Piece>>();
@@ -222,7 +234,7 @@ public class Game
         return moves;
     }
 
-    private Dictionary<KeyValuePair<int, int>, List<Piece>>
+    public Dictionary<KeyValuePair<int, int>, List<Piece>>
         TraverseRight(int start, int stop, int step, PieceColor color, int right, List<Piece> skipped = null)
     {
         Dictionary<KeyValuePair<int, int>, List<Piece>> moves = new Dictionary<KeyValuePair<int, int>, List<Piece>>();
