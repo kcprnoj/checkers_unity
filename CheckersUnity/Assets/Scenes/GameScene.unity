@@ -3051,8 +3051,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BlackLeft: 12
   WhiteLeft: 12
-  BlackKings: 0
-  WhiteKings: 0
   WhitePiecePrefab: {fileID: 919132149155446097, guid: dd9f3ad274e055e4bbf2e7b7d8b8cf56,
     type: 3}
   BlackPiecePrefab: {fileID: 919132149155446097, guid: 18913577627da0a4d82d7cf5ea52e309,
@@ -3063,8 +3061,8 @@ MonoBehaviour:
     type: 3}
   InvisiblePiecePrefab: {fileID: 919132149155446097, guid: d3c06b1b9314c904baac024e7c3c601f,
     type: 3}
-  WhiteCamera: {fileID: 963194225}
-  BlackCamera: {fileID: 191637120}
+  WhiteCamera: {fileID: 963194227}
+  BlackCamera: {fileID: 191637122}
   whitePieceMaterial: {fileID: 2100000, guid: 9d436ec57c514974e9a6868f70388c03, type: 2}
   blackPieceMaterial: {fileID: 2100000, guid: ad5ccb71d7f2dc5499fa15ebe6f50035, type: 2}
   chosenPieceMaterial: {fileID: 2100000, guid: 0c4becc636ce95b4abcabb0ac7fbb74f, type: 2}

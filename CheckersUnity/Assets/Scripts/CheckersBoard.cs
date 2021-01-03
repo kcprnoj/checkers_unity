@@ -20,8 +20,8 @@ public class CheckersBoard : MonoBehaviour
     public GameObject BlackKingPrefab;
     public GameObject InvisiblePiecePrefab;
 
-    public GameObject WhiteCamera;
-    public GameObject BlackCamera;
+    public Camera WhiteCamera;
+    public Camera BlackCamera;
 
     public Material whitePieceMaterial;
     public Material blackPieceMaterial;
@@ -44,7 +44,10 @@ public class CheckersBoard : MonoBehaviour
         CheckersGame = new Game(this);
         possibleMoves = new List<GameObject>();
         CreateBoard();
-        ChooseCamera();
+        if (UIData.Color != null)
+            SetCamera(UIData.Color);
+        else
+            SetCamera("black");
     }
 
     public void OnMouseDown()
@@ -257,17 +260,22 @@ public class CheckersBoard : MonoBehaviour
         SceneManager.LoadScene(2);
     }
 
-    private void ChooseCamera()
+
+    private void SetCamera(string color)
     {
-        if(UIData.Color == "black")
+        if(color == "black")
         {
-            WhiteCamera.SetActive(false);
-            BlackCamera.SetActive(true);
+            WhiteCamera.enabled = false;
+            WhiteCamera.GetComponent<AudioListener>().enabled = false;
+            BlackCamera.enabled = true;
+            BlackCamera.GetComponent<AudioListener>().enabled = true;
         }
         else
         {
-            WhiteCamera.SetActive(true);
-            BlackCamera.SetActive(false);
+            WhiteCamera.enabled = true;
+            WhiteCamera.GetComponent<AudioListener>().enabled = true;
+            BlackCamera.enabled = false;
+            BlackCamera.GetComponent<AudioListener>().enabled = false;
         }
     }
 
