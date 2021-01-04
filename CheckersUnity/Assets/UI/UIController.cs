@@ -5,16 +5,29 @@ using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
 {
-    public void PlaySingleplayerGameWhiteSide()
+    public void PlaySingleplayerGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public void ChooseBlackSide()
+    {
+        UIData.Color = "black";
+    }
+
+    public void ChooseWhiteSide()
+    {
         UIData.Color = "white";
     }
 
-    public void PlaySingleplayerGameBlackSide()
+    public void ConnectToHost()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        UIData.Color = "black";
+
+    }
+
+    public void CreateMultiPlayerGame()
+    {
+
     }
 
     public void QuitGame()
