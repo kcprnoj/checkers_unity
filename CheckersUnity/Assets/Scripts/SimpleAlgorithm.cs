@@ -23,7 +23,7 @@ public class SimpleAlgoirthm
                 {
                     foreach(KeyValuePair<KeyValuePair<int, int>, List<Piece>> move in board[i, j].ValidMoves)
                     {
-                        if (ScoreMove(move) > ScoreMove(BestMove))
+                        if (ScoreMove(move, board[i, j]) > ScoreMove(BestMove, BestPiece))
                         {
                             BestMove = move;
                             BestPiece = board[i, j];
@@ -36,7 +36,7 @@ public class SimpleAlgoirthm
         return BestMove;
     }
 
-    private int ScoreMove(KeyValuePair<KeyValuePair<int, int>, List<Piece>> move)
+    private int ScoreMove(KeyValuePair<KeyValuePair<int, int>, List<Piece>> move, Piece piece)
     {
         if (move.Key.Key == -1)
         {
