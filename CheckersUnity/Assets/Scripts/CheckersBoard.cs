@@ -257,6 +257,7 @@ public class CheckersBoard : MonoBehaviour
         }
         else
             return;
+        CheckersGame.End = true;
         SceneManager.LoadScene(2);
     }
 

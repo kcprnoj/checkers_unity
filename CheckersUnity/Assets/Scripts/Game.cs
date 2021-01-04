@@ -8,6 +8,7 @@ public class Game
     public PieceColor Player;
     public Dictionary<KeyValuePair<int, int>, List<Piece>> ValidMoves;
     public SimpleAlgoirthm AI;
+    public bool End;
 
     public Game(CheckersBoard board)
     {
@@ -28,6 +29,8 @@ public class Game
 
     public bool Select(int row, int col)
     {
+        if (End)
+            return false;
         UpdateValidMoves();
         if (Board.SelectedPawn != null)
         {
