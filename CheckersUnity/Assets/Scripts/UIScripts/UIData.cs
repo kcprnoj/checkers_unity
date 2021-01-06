@@ -15,6 +15,8 @@ public static class UIData
 
     public static int StartTime { get; set; }
 
+    public static bool IsHost { get; set; }
+
     public static int GetUnixTime()
     {
         return (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;

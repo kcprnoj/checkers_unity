@@ -68,6 +68,7 @@ public class UIController : MonoBehaviour
             hostName = "Host";
 
         UIData.Name = hostName;
+        UIData.IsHost = true;
 
         try
         {
@@ -75,6 +76,7 @@ public class UIController : MonoBehaviour
             server.Init();
             Client client = Instantiate(ClientPrefab).GetComponent<Client>();
             client.ClientName = hostName;
+            client.isWhite = (UIData.Color == "white");
             client.ConnectToServer("127.0.0.1", 6321);
         }
         catch(Exception e)
@@ -88,13 +90,6 @@ public class UIController : MonoBehaviour
     {
         Debug.Log("QUIT!");
         Application.Quit();
-    }
-
-    private void GoToMultiplayerGame()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        UIData.GameMode = "multi";
-        UIData.StartTime = UIData.GetUnixTime();
     }
 
     public void BackMultiplayerButton()

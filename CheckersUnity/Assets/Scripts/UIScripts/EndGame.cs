@@ -39,7 +39,6 @@ public class EndGame : MonoBehaviour
     {
         CheckWinorDefeat();
     }
-        
 
     public void NewGameButton()
     {
@@ -54,6 +53,13 @@ public class EndGame : MonoBehaviour
 
     public void MainMenuButton()
     {
+        Server server = FindObjectOfType<Server>();
+        if (server != null)
+            Destroy(server.gameObject);
+
+        Client client = FindObjectOfType<Client>();
+        if (client != null)
+            Destroy(client.gameObject);
         SceneManager.LoadScene(0);
     }
 

@@ -15,15 +15,19 @@ public class Game
         Board = board;
         Turn = PieceColor.Black;
 
-        if(UIData.Color == "black")
+
+        if (UIData.Color == "black")
         {
             Player = PieceColor.Black;
-            AI = new SimpleAlgoirthm(PieceColor.White);
         }
         else
         {
             Player = PieceColor.White;
-            AI = new SimpleAlgoirthm(PieceColor.Black);
+        }
+
+        if (UIData.GameMode == "single")
+        {
+            AI = new SimpleAlgoirthm(PieceColor.White);
         }
     }
 

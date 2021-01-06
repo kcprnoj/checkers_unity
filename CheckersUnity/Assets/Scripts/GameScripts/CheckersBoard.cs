@@ -56,20 +56,40 @@ public class CheckersBoard : MonoBehaviour
         {
             CheckMousePostition();
             CheckersGame.Select((int)mouseOver.x, (int)mouseOver.y);
+            if (UIData.GameMode == "multi")
+            {
+                string move = "CMOVE:" + (int)mouseOver.x + ":" + (int)mouseOver.y + ":" + ((UIData.Color == "black") ? "0" : "1");
+                Client client = FindObjectOfType<Client>();
+                client.Send(move);
+            }
         }
     }
 
     public void Update()
     {
-        if (CheckersGame.AI.Color == CheckersGame.Turn)
+        if (CheckersGame.Player != CheckersGame.Turn)
         {
-            CheckersGame.UpdateValidMoves();
-            CheckersGame.AI.FindBestMove(Board);
-            KeyValuePair<KeyValuePair<int, int>, List<Piece>> move = CheckersGame.AI.BestMove;
-            Piece piece = CheckersGame.AI.BestPiece;
-            CheckersGame.Select(piece.Row, piece.Col);
-            CheckersGame.Select(move.Key.Key, move.Key.Value);
-        }
+
+            if (UIData.GameMode == "single")
+            {
+                CheckersGame.UpdateValidMoves();
+                CheckersGame.AI.FindBestMove(Board);
+                KeyValuePair<KeyValuePair<int, int>, List<Piece>> move = CheckersGame.AI.BestMove;
+                Piece piece = CheckersGame.AI.BestPiece;
+                CheckersGame.Select(piece.Row, piece.Col);
+                CheckersGame.Select(move.Key.Key, move.Key.Value);
+            }
+            else
+            {
+                Client client = FindObjectOfType<Client>();
+                if (client.EnemyMove.x >= 0)
+                {
+                    Debug.Log("Enemy Move " + client.EnemyMove);
+                    CheckersGame.Select((int)client.EnemyMove.x, (int)client.EnemyMove.y);
+                    client.EnemyMove = new Vector2(-1.0f, -1.0f);
+                }
+            }
+        } 
     }
 
     public void CreateBoard()
@@ -166,6 +186,12 @@ public class CheckersBoard : MonoBehaviour
         if (piece == null)
             return;
 
+        if (CheckersGame.Turn != CheckersGame.Player)
+        {
+            selected = false;
+            possibleMove = false;
+        }
+
         if (!selected && piece.Color == PieceColor.White)
         {
             Material[] currentMaterial = piece.PieceGameObject.GetComponent<Renderer>().materials;
@@ -195,6 +221,8 @@ public class CheckersBoard : MonoBehaviour
 
     public void DrawValidMoves()
     {
+        if (CheckersGame.Turn != CheckersGame.Player)
+            return;
         DeleteValidMoves();
         if (CheckersGame.ValidMoves == null)
             return;

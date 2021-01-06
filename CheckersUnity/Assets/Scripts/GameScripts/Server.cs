@@ -79,12 +79,19 @@ public class Server : MonoBehaviour
     {
         TcpListener listener = (TcpListener)result.AsyncState;
 
+        string usersNames = "";
+        foreach (ServerClient serverClient in serverClients)
+        {
+            usersNames += serverClient.ClientName + ":";
+        }
+
         ServerClient client = new ServerClient(listener.EndAcceptTcpClient(result));
         serverClients.Add(client);
 
         StartListening();
 
-        Debug.Log("Connected");
+        Broadcast("SW:" + usersNames, new List<ServerClient>{ serverClients[serverClients.Count - 1] });
+        Broadcast("SCC:" + (UIData.Color), new List<ServerClient> { serverClients[serverClients.Count - 1] });
     }
 
     private bool IsConnected(TcpClient client)
@@ -107,7 +114,7 @@ public class Server : MonoBehaviour
         }
     }
 
-    private void Broacast(string data, List<ServerClient> clients)
+    private void Broadcast(string data, List<ServerClient> clients)
     {
         foreach (ServerClient client in clients)
         {
@@ -126,13 +133,25 @@ public class Server : MonoBehaviour
 
     private void OnIncomingData(ServerClient c, string data)
     {
-        Debug.Log(c.clientName + " : " + data);
+        string[] clientData = data.Split(':');
+        Debug.Log("Server : " + data);
+
+        switch (clientData[0])
+        {
+            case "CW":
+                c.ClientName = clientData[1];
+                Broadcast("SNC:" + c.ClientName + ":" + clientData[2], serverClients);
+                break;
+            case "CMOVE":
+                Broadcast("SMOVE:" + clientData[1] + ":" + clientData[2] + ":" + clientData[3], serverClients);
+                break;
+        }
     }
 }
 
 public class ServerClient
 {
-    public string clientName;
+    public string ClientName;
     public TcpClient Client;
 
     public ServerClient(TcpClient client)
