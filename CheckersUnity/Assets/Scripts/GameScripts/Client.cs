@@ -95,6 +95,22 @@ public class Client : MonoBehaviour
                 else if (!UIData.IsHost)
                     UIData.Color = "black";
                 break;
+            case "DEL":
+                for (int i = 0; i < players.Count; i++)
+                {
+                    if (players[i].name == serverData[1])
+                    {
+                        players.RemoveAt(i);
+                        CheckersBoard board = FindObjectOfType<CheckersBoard>();
+                        if (UIData.Color == "black")
+                            board.WhiteLeft = 0;
+                        else
+                            board.BlackLeft = 0;
+                        board.CheckWinner();
+                        break;
+                    }
+                }
+                break;
         }
 
     }

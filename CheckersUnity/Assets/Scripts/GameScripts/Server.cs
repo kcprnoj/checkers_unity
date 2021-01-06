@@ -65,8 +65,10 @@ public class Server : MonoBehaviour
 
         for (int i = disconnectClients.Count - 1; i >= 0; i--)
         {
+            string name = disconnectClients[i].ClientName;
             serverClients.Remove(disconnectClients[i]);
             disconnectClients.RemoveAt(i);
+            Broadcast("DEL:" + name, serverClients);
         }
     }
 

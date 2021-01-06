@@ -17,6 +17,10 @@ public static class UIData
 
     public static bool IsHost { get; set; }
 
+    public static bool NewGameEnemy { get; set; }
+
+    public static bool NewGamePlayer { get; set; }
+
     public static int GetUnixTime()
     {
         return (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
