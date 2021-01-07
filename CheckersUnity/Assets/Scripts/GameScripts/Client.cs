@@ -49,9 +49,9 @@ public class Client : MonoBehaviour
 
             socketReady = true;
         }
-        catch (Exception e)
+        catch (SocketException e)
         {
-            Debug.Log("Socket error " + e.Message);
+            Debug.Log(e.Message);
             return false;
         }
 
@@ -64,7 +64,16 @@ public class Client : MonoBehaviour
             return;
 
         writer.WriteLine(data);
-        writer.Flush();
+        try
+        {
+            writer.Flush();
+        }
+        catch (SocketException sc)
+        {
+            Debug.Log(sc.Message);
+            SceneManager.LoadScene(0);
+            Destroy(gameObject);
+        }
     }
 
     private void OnIncomingData(string data)
@@ -81,21 +90,25 @@ public class Client : MonoBehaviour
                 }
                 Send("CW:" + ClientName + ":" + ((UIData.Color == "white")?1:0));
                 break;
+
             case "SNC":
                 UserConnected(serverData[1], false);
                 break;
+
             case "SMOVE":
                 string color = (serverData[3] == "0") ? "black" : "white";
                 if (UIData.Color != color)
                     SetEnemyMove(Int32.Parse(serverData[1]), Int32.Parse(serverData[2]));
                 break;
+
             case "SCC":
                 if (serverData[1] == "black" && !UIData.IsHost)
                     UIData.Color = "white";
                 else if (!UIData.IsHost)
                     UIData.Color = "black";
                 break;
-            case "DEL":
+
+            case "SDEL":
                 for (int i = 0; i < players.Count; i++)
                 {
                     if (players[i].name == serverData[1])
@@ -110,6 +123,15 @@ public class Client : MonoBehaviour
                         break;
                     }
                 }
+                break;
+
+            case "SNEW":
+                if (serverData[1] != UIData.Color)
+                    UIData.NewGameEnemy = true;
+                break;
+            case "SDOWN":
+                SceneManager.LoadScene(0);
+                Destroy(gameObject);
                 break;
         }
 

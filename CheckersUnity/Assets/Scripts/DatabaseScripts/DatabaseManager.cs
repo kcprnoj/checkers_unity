@@ -68,7 +68,7 @@ public class DatabaseManager
         {
             int wins=0;
             int defeats=0;
-            int time=0;
+            int time=int.MaxValue;
             string side="";
             foreach(var groupElem in group)
             {
@@ -77,7 +77,7 @@ public class DatabaseManager
                 else if (groupElem.Status == "Defeat")
                     defeats++;
 
-                if (time < groupElem.Time)
+                if (time > groupElem.Time)
                 {
                     time = groupElem.Time;
                     side = groupElem.Side;

@@ -19,7 +19,7 @@ public class SimpleAlgoirthm
         {
             for (int j = 0; j < 8; j++)
             {
-                if (board[i, j] != null && board[i, j].Color == Color)
+                if (board[i, j] != null && board[i, j].Color == Color && board[i, j].ValidMoves != null)
                 {
                     foreach(KeyValuePair<KeyValuePair<int, int>, List<Piece>> move in board[i, j].ValidMoves)
                     {

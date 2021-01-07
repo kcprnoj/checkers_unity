@@ -27,7 +27,7 @@ public class Game
 
         if (UIData.GameMode == "single")
         {
-            AI = new SimpleAlgoirthm(PieceColor.White);
+            AI = new SimpleAlgoirthm((Player == PieceColor.White) ? PieceColor.Black : PieceColor.White) ;
         }
     }
 

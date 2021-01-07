@@ -38,11 +38,27 @@ public class EndGame : MonoBehaviour
     private void Update()
     {
         CheckWinorDefeat();
+
+        if (gameMode == "multi")
+        {
+            if (UIData.NewGameEnemy && UIData.NewGame)
+            {
+                SceneManager.LoadScene(1);
+            }
+        }
     }
 
     public void NewGameButton()
     {
-        SceneManager.LoadScene(1);
+        if (gameMode == "single")
+            SceneManager.LoadScene(1);
+        else
+        {
+            Client client = FindObjectOfType<Client>();
+            client.Send("CNEW:" + color);
+            UIData.NewGame = true;
+        }
+
     }
 
     public void EndGameButton()

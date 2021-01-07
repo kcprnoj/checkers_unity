@@ -69,8 +69,7 @@ public class CheckersBoard : MonoBehaviour
     {
         if (CheckersGame.Player != CheckersGame.Turn)
         {
-
-            if (UIData.GameMode == "single")
+            if (UIData.GameMode == "single" && false)
             {
                 CheckersGame.UpdateValidMoves();
                 CheckersGame.AI.FindBestMove(Board);
@@ -79,7 +78,7 @@ public class CheckersBoard : MonoBehaviour
                 CheckersGame.Select(piece.Row, piece.Col);
                 CheckersGame.Select(move.Key.Key, move.Key.Value);
             }
-            else
+            else if (UIData.GameMode == "multi")
             {
                 Client client = FindObjectOfType<Client>();
                 if (client.EnemyMove.x >= 0)

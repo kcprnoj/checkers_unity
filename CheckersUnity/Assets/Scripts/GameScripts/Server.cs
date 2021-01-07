@@ -68,7 +68,7 @@ public class Server : MonoBehaviour
             string name = disconnectClients[i].ClientName;
             serverClients.Remove(disconnectClients[i]);
             disconnectClients.RemoveAt(i);
-            Broadcast("DEL:" + name, serverClients);
+            Broadcast("SDEL:" + name, serverClients);
         }
     }
 
@@ -147,7 +147,20 @@ public class Server : MonoBehaviour
             case "CMOVE":
                 Broadcast("SMOVE:" + clientData[1] + ":" + clientData[2] + ":" + clientData[3], serverClients);
                 break;
+            case "CNEW":
+                Broadcast("SNEW:" + clientData[1], serverClients);
+                break;
         }
+    }
+
+    private void OnApplicationQuit()
+    {
+        Broadcast("SDOWN:", serverClients);
+    }
+
+    private void OnDisable()
+    {
+        Broadcast("SDOWN:", serverClients);
     }
 }
 

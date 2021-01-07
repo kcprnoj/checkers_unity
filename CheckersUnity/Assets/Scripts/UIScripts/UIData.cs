@@ -13,13 +13,15 @@ public static class UIData
 
     public static string Name { get; set; }
 
+    public static string EnemyName { get; set; }
+
     public static int StartTime { get; set; }
 
     public static bool IsHost { get; set; }
 
     public static bool NewGameEnemy { get; set; }
 
-    public static bool NewGamePlayer { get; set; }
+    public static bool NewGame { get; set; }
 
     public static int GetUnixTime()
     {
