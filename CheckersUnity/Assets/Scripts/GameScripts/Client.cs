@@ -116,12 +116,12 @@ public class Client : MonoBehaviour
                     if (players[i].name == serverData[1])
                     {
                         players.RemoveAt(i);
-                        CheckersBoard board = FindObjectOfType<CheckersBoard>();
+                        CheckersBoard b = FindObjectOfType<CheckersBoard>();
                         if (UIData.Color == "black")
-                            board.WhiteLeft = 0;
+                            b.WhiteLeft = 0;
                         else
-                            board.BlackLeft = 0;
-                        board.CheckWinner();
+                            b.BlackLeft = 0;
+                        b.CheckWinner();
                         break;
                     }
                 }
@@ -134,6 +134,9 @@ public class Client : MonoBehaviour
             case "SDOWN":
                 SceneManager.LoadScene(0);
                 Destroy(gameObject);
+                break;
+            case "SMSG":
+                FindObjectOfType<CheckersBoard>().ChatMessage(serverData[1] + " : " + serverData[2]);
                 break;
         }
 

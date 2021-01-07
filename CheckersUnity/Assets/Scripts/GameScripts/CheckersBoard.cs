@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class CheckersBoard : MonoBehaviour
@@ -32,6 +33,9 @@ public class CheckersBoard : MonoBehaviour
     public AudioSource skipPieceSound;
     public AudioSource movePieceSound;
 
+    public Transform ChatMessageContainer;
+    public GameObject MessagePrefab;
+
     Game CheckersGame;
 
     private List<GameObject> possibleMoves;
@@ -48,6 +52,9 @@ public class CheckersBoard : MonoBehaviour
             SetCamera(UIData.Color);
         else
             SetCamera("black");
+
+        if (UIData.GameMode != "multi")
+            FindObjectOfType<Canvas>().gameObject.SetActive(false);
     }
 
     public void OnMouseDown()
@@ -69,7 +76,7 @@ public class CheckersBoard : MonoBehaviour
     {
         if (CheckersGame.Player != CheckersGame.Turn)
         {
-            if (UIData.GameMode == "single" && false)
+            if (UIData.GameMode == "single")
             {
                 CheckersGame.UpdateValidMoves();
                 CheckersGame.AI.FindBestMove(Board);
@@ -335,4 +342,22 @@ public class CheckersBoard : MonoBehaviour
         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, -yRotation, gameObject.transform.eulerAngles.z);
     }
 
+    public void SendChatMessage()
+    {
+        InputField input = GameObject.Find("InputMessage").GetComponent<InputField>();
+
+        if (input.text == "")
+            return;
+
+        FindObjectOfType<Client>().Send("CMSG:" + UIData.Name + ":" + input.text);
+        input.text = "";
+    }
+
+    public void ChatMessage(string message)
+    {
+        GameObject gameObject = Instantiate(MessagePrefab);
+        gameObject.transform.SetParent(ChatMessageContainer);
+
+        gameObject.GetComponentInChildren<Text>().text = message;
+    }
 }

@@ -150,6 +150,9 @@ public class Server : MonoBehaviour
             case "CNEW":
                 Broadcast("SNEW:" + clientData[1], serverClients);
                 break;
+            case "CMSG":
+                Broadcast("SMSG:" + clientData[1] + ":" + clientData[2], serverClients);
+                break;
         }
     }
 
