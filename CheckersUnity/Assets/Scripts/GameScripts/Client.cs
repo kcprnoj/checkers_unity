@@ -87,6 +87,8 @@ public class Client : MonoBehaviour
                 for (int i = 1; i < serverData.Length -1; i++)
                 {
                     UserConnected(serverData[i], false);
+                    if (serverData[i] != ClientName)
+                        UIData.EnemyName = serverData[i];
                 }
                 Send("CW:" + ClientName + ":" + ((UIData.Color == "white")?1:0));
                 break;
