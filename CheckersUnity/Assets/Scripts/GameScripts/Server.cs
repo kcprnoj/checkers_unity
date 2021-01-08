@@ -63,6 +63,13 @@ public class Server : MonoBehaviour
             }
         }
 
+        int temp = serverClients.Count;
+        for(int i = temp; i > 2; i--)
+        {
+            disconnectClients.Add(serverClients[serverClients.Count-1]);
+            Broadcast("SOUT:", new List<ServerClient> { serverClients[serverClients.Count - 1] });
+        }
+
         for (int i = disconnectClients.Count - 1; i >= 0; i--)
         {
             string name = disconnectClients[i].ClientName;

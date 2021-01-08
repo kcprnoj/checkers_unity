@@ -71,8 +71,7 @@ public class Client : MonoBehaviour
         catch (SocketException sc)
         {
             Debug.Log(sc.Message);
-            SceneManager.LoadScene(0);
-            Destroy(gameObject);
+            GoToMenu();
         }
     }
 
@@ -109,26 +108,15 @@ public class Client : MonoBehaviour
                 break;
 
             case "SDEL":
-                for (int i = 0; i < players.Count; i++)
-                {
-                    if (players[i].name == serverData[1])
-                    {
-                        players.RemoveAt(i);
-                        CheckersBoard b = FindObjectOfType<CheckersBoard>();
-                        if (UIData.Color == "Black")
-                            b.WhiteLeft = 0;
-                        else
-                            b.BlackLeft = 0;
-                        b.CheckWinner();
-                        break;
-                    }
-                }
+                if (serverData[1] == UIData.EnemyName)
+                    GoToMenu();
                 break;
 
             case "SNEW":
                 if (serverData[1] != UIData.Color)
                     UIData.NewGameEnemy = true;
                 break;
+            case "SOUT":
             case "SDOWN":
                 SceneManager.LoadScene(0);
                 Destroy(gameObject);
@@ -138,6 +126,18 @@ public class Client : MonoBehaviour
                 break;
         }
 
+    }
+
+    private void GoToMenu()
+    {
+        Server server = FindObjectOfType<Server>();
+        if (server != null)
+            Destroy(server.gameObject);
+
+        Client client = FindObjectOfType<Client>();
+        if (client != null)
+            Destroy(client.gameObject);
+        SceneManager.LoadScene(0);
     }
 
     private void SetEnemyMove(int x, int y)
