@@ -56,7 +56,6 @@ public class Game
             Board.DrawValidMoves();
             return true;
         }
-
         return false;
     }
 
@@ -120,6 +119,11 @@ public class Game
             }
         }
 
+        if (!HasValidMoves())
+        {
+            Board.LoseGame();
+        }
+
         Board.ShowChosenPieces(true);
     }
 
@@ -164,6 +168,25 @@ public class Game
         if (ValidMoves == null)
             return false;
         return ValidMoves.ContainsKey(new KeyValuePair<int, int>(row, col));
+    }
+
+    private bool HasValidMoves()
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                Piece piece = Board.GetPiece(i, j);
+                if (piece != null && piece.Color == Turn)
+                {
+                    if (piece.ValidMoves == null)
+                        continue;
+                    else if (piece.ValidMoves.Count != 0)
+                        return true;
+                }
+            }
+        }
+        return false;
     }
 
     private Dictionary<KeyValuePair<int, int>, List<Piece>> GetValidMoves(Piece piece)

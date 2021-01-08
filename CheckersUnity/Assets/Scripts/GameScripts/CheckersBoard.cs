@@ -39,6 +39,7 @@ public class CheckersBoard : MonoBehaviour
     Game CheckersGame;
 
     private List<GameObject> possibleMoves;
+    private bool noAI = true;
 
     public void Awake()
     {
@@ -59,7 +60,7 @@ public class CheckersBoard : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if (CheckersGame.Turn == CheckersGame.Player)
+        if (CheckersGame.Turn == CheckersGame.Player || noAI)
         {
             CheckMousePostition();
             CheckersGame.Select((int)mouseOver.x, (int)mouseOver.y);
@@ -74,7 +75,7 @@ public class CheckersBoard : MonoBehaviour
 
     public void Update()
     {
-        if (CheckersGame.Player != CheckersGame.Turn)
+        if (CheckersGame.Player != CheckersGame.Turn && !noAI)
         {
             if (UIData.GameMode == "single")
             {
@@ -359,5 +360,14 @@ public class CheckersBoard : MonoBehaviour
         gameObject.transform.SetParent(ChatMessageContainer);
 
         gameObject.GetComponentInChildren<Text>().text = message;
+    }
+
+    public void LoseGame()
+    {
+        if (CheckersGame.Turn == PieceColor.Black)
+            BlackLeft = 0;
+        else
+            WhiteLeft = 0;
+        CheckWinner();
     }
 }
