@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-public class DatabaseElement
+﻿public class DatabaseElementSinglePlayer
 {
     public string Name { get; set; }
     public string Side { get; set; }
@@ -9,7 +6,7 @@ public class DatabaseElement
     public int Time { get; set; }
     public int Id { get; set; }
 
-    public DatabaseElement(int id, string name, string side,string status, int time)
+    public DatabaseElementSinglePlayer(int id, string name, string side,string status, int time)
     {
         this.Id = id;
         this.Name = name;

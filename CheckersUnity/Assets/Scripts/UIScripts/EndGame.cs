@@ -82,7 +82,7 @@ public class EndGame : MonoBehaviour
     private void SaveToDatabase()
     {
         DatabaseManager dbManager = new DatabaseManager();
-        dbManager.InsertScore(this.playerName, this.color, this.status, this.endTime - this.startTime);
+        dbManager.InsertScoreIntoSinglePlayerTable(this.playerName, this.color, this.status, this.endTime - this.startTime);
     }
 
     private void CheckWinorDefeat()

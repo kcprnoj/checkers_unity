@@ -4,27 +4,38 @@ using UnityEngine;
 
 public class DatabaseViewManager : MonoBehaviour
 {
-    public GameObject rankPrefab;
-    public Transform rankingParent;
+    public GameObject singlePlayerRankPrefab;
+    public GameObject multiPlayerRankPrefab;
+    public Transform singlePlayerRankingParent;
+    public Transform multiPlayerRankingParent;
     private DatabaseManager dbManager;
 
     void Start()
     {
         this.dbManager = new DatabaseManager();
-        ShowRanking();
+        ShowRankingSinglePlayer();
+        ShowRankingMultiPlayer();
     }
 
-    private void ShowRanking()
+    private void ShowRankingSinglePlayer()
     {
-        foreach (var elem in dbManager.RankingElements)
+        foreach (var elem in dbManager.RankingElementsSingle)
         {
-            if(elem.RankNumber < 11)
-            {
-                GameObject tmpObject = Instantiate(rankPrefab);
-                tmpObject.GetComponent<RankingElementDisplay>().SetRankingElement(elem);
-                tmpObject.transform.SetParent(rankingParent);
+                GameObject tmpObject = Instantiate(singlePlayerRankPrefab);
+                tmpObject.GetComponent<RankingElementSinglePlayerDisplay>().SetRankingElement(elem);
+                tmpObject.transform.SetParent(singlePlayerRankingParent);
                 tmpObject.transform.localScale = new Vector3(1, 1, 1);
-            }
+        }
+    }
+
+    private void ShowRankingMultiPlayer()
+    {
+        foreach (var elem in dbManager.DbElementsMulti)
+        {
+                GameObject tmpObject = Instantiate(multiPlayerRankPrefab);
+                tmpObject.GetComponent<DatabaseElementMultiPlayerDisplay>().SetMultiPlayerElement(elem);
+                tmpObject.transform.SetParent(multiPlayerRankingParent);
+                tmpObject.transform.localScale = new Vector3(1, 1, 1);
         }
     }
 }

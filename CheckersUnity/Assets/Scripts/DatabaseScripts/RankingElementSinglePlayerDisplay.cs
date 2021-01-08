@@ -4,26 +4,26 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class RankingElementDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class RankingElementSinglePlayerDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public GameObject rank;
     public GameObject playerName;
     public GameObject gamesWonNumber;
     public GameObject gamesLostNumber;
     public GameObject bestGame;
-    public GameObject rankDetails;
+    public GameObject rankDetailsPanel;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        rankDetails.SetActive(true);
+        rankDetailsPanel.SetActive(true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        rankDetails.SetActive(false);
+        rankDetailsPanel.SetActive(false);
     }
 
-    public void SetRankingElement(RankingElement elem)
+    public void SetRankingElement(RankingElementSinglePlayer elem)
     {
         this.rank.GetComponent<TMPro.TextMeshProUGUI>().text = "# " + elem.RankNumber.ToString();
         this.playerName.GetComponent<TMPro.TextMeshProUGUI>().text = elem.Name;
@@ -31,16 +31,4 @@ public class RankingElementDisplay : MonoBehaviour, IPointerEnterHandler, IPoint
         this.gamesLostNumber.GetComponent<TMPro.TextMeshProUGUI>().text = elem.NumberOfDefeats.ToString();
         this.bestGame.GetComponent<TMPro.TextMeshProUGUI>().text = "Best Game:\nSide -> " + elem.Side + "\tTime -> " + elem.Time.ToString() + " s";
     }
-
-    public void ToggleDetails()
-    {
-        if (rankDetails.activeSelf)
-            rankDetails.SetActive(false);
-        else
-        {
-            rankDetails.GetComponent<RectTransform>().SetAsLastSibling();
-            rankDetails.SetActive(true); 
-        }
-    }
-
 }

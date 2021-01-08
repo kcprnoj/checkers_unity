@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-public class RankingElement
+public class RankingElementSinglePlayer
 {
     public int RankNumber { get; set; }
     public string Name { get; set; }
@@ -11,7 +11,7 @@ public class RankingElement
     public int Time { get; set; }
     public int Points { get; set; }
 
-    public RankingElement(int rank, string name, int wins, int defeats,string side, int time, int points)
+    public RankingElementSinglePlayer(int rank, string name, int wins, int defeats,string side, int time, int points)
     {
         this.RankNumber = rank;
         this.Name = name;

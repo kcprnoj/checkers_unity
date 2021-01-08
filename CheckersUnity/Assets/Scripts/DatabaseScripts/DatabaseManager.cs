@@ -7,18 +7,22 @@ using UnityEngine;
 public class DatabaseManager
 {
     private string connectionString;
-    private List<DatabaseElement> dbElements = new List<DatabaseElement>();
+    private List<DatabaseElementSinglePlayer> dbElementsSingle = new List<DatabaseElementSinglePlayer>();
+    private List<DatabaseElementMultiPlayer> dbElementsMulti = new List<DatabaseElementMultiPlayer>();
 
-    public List<RankingElement> RankingElements = new List<RankingElement>();
+    private List<RankingElementSinglePlayer> rankingElementsSingle = new List<RankingElementSinglePlayer>();
+
+    public List<RankingElementSinglePlayer> RankingElementsSingle { get; set; }
+    public List<DatabaseElementMultiPlayer> DbElementsMulti { get; set; }
 
     public DatabaseManager()
     {
         connectionString = "URI=file:" + Application.dataPath + "/Database.db";
         GetScores();
-        CreateRankingTable();
+        CreateRankingTableSinglePlayer();
     }
 
-    public void InsertScore(string name, string side,string status, int time)
+    public void InsertScoreIntoSinglePlayerTable(string name, string side,string status, int time)
     {
         using (IDbConnection dbConnection = new SqliteConnection(connectionString))
         {
@@ -34,9 +38,25 @@ public class DatabaseManager
         }
     }
 
+    public void InsertScoreIntoMultiPlayerTable(string playerName, string playerSide, string enemyName, string enemySide, string winner, int time)
+    {
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString))
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                string sqlQuery = String.Format("INSERT INTO MultiPlayerTable(PlayerName,PlayerSide,EnemyName,EnemySide,Winner,Time) VALUES(\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\")", playerName, playerSide, enemyName, enemySide, winner, time);
+
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteScalar();
+                dbConnection.Close();
+            }
+        }
+    }
+
     private void GetScores()
     {
-        dbElements.Clear();
+        dbElementsSingle.Clear();
 
         using (IDbConnection dbConnection = new SqliteConnection(connectionString))
         {
@@ -44,6 +64,7 @@ public class DatabaseManager
             using (IDbCommand dbCmd = dbConnection.CreateCommand())
             {
                 string sqlQuery = "SELECT * FROM SinglePlayerScores";
+                string sqlQuery2 = "SELECT * FROM MultiPlayerTable";
 
                 dbCmd.CommandText = sqlQuery;
 
@@ -51,7 +72,18 @@ public class DatabaseManager
                 {
                     while(reader.Read())
                     {
-                        dbElements.Add(new DatabaseElement(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetInt32(4)));
+                        dbElementsSingle.Add(new DatabaseElementSinglePlayer(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetInt32(4)));
+                    }
+                    reader.Close();
+                }
+
+                dbCmd.CommandText = sqlQuery2;
+
+                using (IDataReader reader = dbCmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        dbElementsMulti.Add(new DatabaseElementMultiPlayer(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetInt32(5)));
                     }
                     dbConnection.Close();
                     reader.Close();
@@ -60,10 +92,10 @@ public class DatabaseManager
         }
     }
 
-    private void CreateRankingTable()
+    private void CreateRankingTableSinglePlayer()
     {
-        RankingElements.Clear();
-        var dbElemsGroupedByName = dbElements.GroupBy(elem =>elem.Name);
+        rankingElementsSingle.Clear();
+        var dbElemsGroupedByName = dbElementsSingle.GroupBy(elem =>elem.Name);
         foreach(var group in dbElemsGroupedByName)
         {
             int wins=0;
@@ -83,17 +115,17 @@ public class DatabaseManager
                     side = groupElem.Side;
                 }     
             }
-            RankingElements.Add(new RankingElement(0, group.Key, wins, defeats, side, time, wins-defeats));
+            rankingElementsSingle.Add(new RankingElementSinglePlayer(0, group.Key, wins, defeats, side, time, wins-defeats));
         }
 
-        RankingElements.Sort(
-            delegate(RankingElement r1, RankingElement r2)
+        rankingElementsSingle.Sort(
+            delegate(RankingElementSinglePlayer r1, RankingElementSinglePlayer r2)
             {
                 return r2.Points.CompareTo(r1.Points);
             });
-        for(int i=0; i < RankingElements.Count; i++)
+        for(int i=0; i < rankingElementsSingle.Count; i++)
         {
-            RankingElements[i].RankNumber = i + 1;
+            rankingElementsSingle[i].RankNumber = i + 1;
         }
     }
 }
