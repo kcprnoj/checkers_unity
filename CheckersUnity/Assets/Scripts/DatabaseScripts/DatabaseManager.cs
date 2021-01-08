@@ -8,12 +8,9 @@ public class DatabaseManager
 {
     private string connectionString;
     private List<DatabaseElementSinglePlayer> dbElementsSingle = new List<DatabaseElementSinglePlayer>();
-    private List<DatabaseElementMultiPlayer> dbElementsMulti = new List<DatabaseElementMultiPlayer>();
+    public List<DatabaseElementMultiPlayer> DbElementsMulti = new List<DatabaseElementMultiPlayer>();
 
-    private List<RankingElementSinglePlayer> rankingElementsSingle = new List<RankingElementSinglePlayer>();
-
-    public List<RankingElementSinglePlayer> RankingElementsSingle { get; set; }
-    public List<DatabaseElementMultiPlayer> DbElementsMulti { get; set; }
+    public List<RankingElementSinglePlayer> RankingElementsSingle = new List<RankingElementSinglePlayer>();
 
     public DatabaseManager()
     {
@@ -83,7 +80,7 @@ public class DatabaseManager
                 {
                     while (reader.Read())
                     {
-                        dbElementsMulti.Add(new DatabaseElementMultiPlayer(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetInt32(5)));
+                        DbElementsMulti.Add(new DatabaseElementMultiPlayer(reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5), reader.GetInt32(6)));
                     }
                     dbConnection.Close();
                     reader.Close();
@@ -94,7 +91,7 @@ public class DatabaseManager
 
     private void CreateRankingTableSinglePlayer()
     {
-        rankingElementsSingle.Clear();
+        RankingElementsSingle.Clear();
         var dbElemsGroupedByName = dbElementsSingle.GroupBy(elem =>elem.Name);
         foreach(var group in dbElemsGroupedByName)
         {
@@ -115,17 +112,17 @@ public class DatabaseManager
                     side = groupElem.Side;
                 }     
             }
-            rankingElementsSingle.Add(new RankingElementSinglePlayer(0, group.Key, wins, defeats, side, time, wins-defeats));
+            RankingElementsSingle.Add(new RankingElementSinglePlayer(0, group.Key, wins, defeats, side, time, wins-defeats));
         }
 
-        rankingElementsSingle.Sort(
+        RankingElementsSingle.Sort(
             delegate(RankingElementSinglePlayer r1, RankingElementSinglePlayer r2)
             {
                 return r2.Points.CompareTo(r1.Points);
             });
-        for(int i=0; i < rankingElementsSingle.Count; i++)
+        for(int i=0; i < RankingElementsSingle.Count; i++)
         {
-            rankingElementsSingle[i].RankNumber = i + 1;
+            RankingElementsSingle[i].RankNumber = i + 1;
         }
     }
 }

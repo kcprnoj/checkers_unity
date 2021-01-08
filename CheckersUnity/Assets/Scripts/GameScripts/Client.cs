@@ -90,7 +90,7 @@ public class Client : MonoBehaviour
                     if (serverData[i] != ClientName)
                         UIData.EnemyName = serverData[i];
                 }
-                Send("CW:" + ClientName + ":" + ((UIData.Color == "white")?1:0));
+                Send("CW:" + ClientName + ":" + ((UIData.Color == "White")?1:0));
                 break;
 
             case "SNC":
@@ -98,16 +98,16 @@ public class Client : MonoBehaviour
                 break;
 
             case "SMOVE":
-                string color = (serverData[3] == "0") ? "black" : "white";
+                string color = (serverData[3] == "0") ? "Black" : "White";
                 if (UIData.Color != color)
                     SetEnemyMove(Int32.Parse(serverData[1]), Int32.Parse(serverData[2]));
                 break;
 
             case "SCC":
-                if (serverData[1] == "black" && !UIData.IsHost)
-                    UIData.Color = "white";
+                if (serverData[1] == "Black" && !UIData.IsHost)
+                    UIData.Color = "White";
                 else if (!UIData.IsHost)
-                    UIData.Color = "black";
+                    UIData.Color = "Black";
                 break;
 
             case "SDEL":
@@ -117,7 +117,7 @@ public class Client : MonoBehaviour
                     {
                         players.RemoveAt(i);
                         CheckersBoard b = FindObjectOfType<CheckersBoard>();
-                        if (UIData.Color == "black")
+                        if (UIData.Color == "Black")
                             b.WhiteLeft = 0;
                         else
                             b.BlackLeft = 0;

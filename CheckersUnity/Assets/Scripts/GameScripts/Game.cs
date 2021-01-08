@@ -16,7 +16,7 @@ public class Game
         Turn = PieceColor.Black;
 
 
-        if (UIData.Color == "black")
+        if (UIData.Color == "Black")
         {
             Player = PieceColor.Black;
         }

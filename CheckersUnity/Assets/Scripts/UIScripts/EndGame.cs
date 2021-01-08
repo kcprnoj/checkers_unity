@@ -17,6 +17,7 @@ public class EndGame : MonoBehaviour
     private string color;
     private string gameMode;
     private string playerName;
+    private string enemyName;
     private int startTime;
     private int endTime;
     private string status;
@@ -29,11 +30,9 @@ public class EndGame : MonoBehaviour
         this.gameMode = UIData.GameMode;
         this.playerName = UIData.Name;
         this.startTime = UIData.StartTime;
+        this.enemyName = UIData.EnemyName;
         CheckWinorDefeat();
-        if(this.gameMode == "single")
-        {
-            SaveToDatabase();
-        }
+        SaveToDatabase();
     }
     private void Update()
     {
@@ -82,14 +81,22 @@ public class EndGame : MonoBehaviour
     private void SaveToDatabase()
     {
         DatabaseManager dbManager = new DatabaseManager();
-        dbManager.InsertScoreIntoSinglePlayerTable(this.playerName, this.color, this.status, this.endTime - this.startTime);
+        if (this.gameMode == "single")
+        {
+            dbManager.InsertScoreIntoSinglePlayerTable(this.playerName, this.color, this.status, this.endTime - this.startTime);
+        }
+        else if(this.gameMode == "multi")
+        {
+            string enemyColor = (this.color == "White") ? "Black" : "White";
+            dbManager.InsertScoreIntoMultiPlayerTable(this.playerName, this.color, this.enemyName, enemyColor, this.winner, this.endTime - this.startTime);
+        }
     }
 
     private void CheckWinorDefeat()
     {
-        if (this.color == "black")
+        if (this.color == "Black")
         {
-            if (this.winner == "black")
+            if (this.winner == "Black")
             {
                 winMenu.SetActive(true);
                 blackWinBackground.SetActive(true);
@@ -102,9 +109,9 @@ public class EndGame : MonoBehaviour
                 this.status = "Defeat";
             }
         }
-        else if (this.color == "white")
+        else if (this.color == "White")
         {
-            if (this.winner == "white")
+            if (this.winner == "White")
             {
                 winMenu.SetActive(true);
                 whiteWinBackground.SetActive(true);

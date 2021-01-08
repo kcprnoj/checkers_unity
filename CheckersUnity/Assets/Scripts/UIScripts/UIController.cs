@@ -21,12 +21,12 @@ public class UIController : MonoBehaviour
 
     public void ChooseBlackSide()
     {
-        UIData.Color = "black";
+        UIData.Color = "Black";
     }
 
     public void ChooseWhiteSide()
     {
-        UIData.Color = "white";
+        UIData.Color = "White";
     }
 
     public void ConfirmNameEnter()
@@ -76,7 +76,7 @@ public class UIController : MonoBehaviour
             server.Init();
             Client client = Instantiate(ClientPrefab).GetComponent<Client>();
             client.ClientName = hostName;
-            client.isWhite = (UIData.Color == "white");
+            client.isWhite = (UIData.Color == "White");
             client.ConnectToServer("127.0.0.1", 6321);
         }
         catch(Exception e)

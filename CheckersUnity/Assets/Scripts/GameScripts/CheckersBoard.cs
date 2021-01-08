@@ -51,7 +51,7 @@ public class CheckersBoard : MonoBehaviour
         if (UIData.Color != null)
             SetCamera(UIData.Color);
         else
-            SetCamera("black");
+            SetCamera("Black");
 
         if (UIData.GameMode != "multi")
             FindObjectOfType<Canvas>().gameObject.SetActive(false);
@@ -65,7 +65,7 @@ public class CheckersBoard : MonoBehaviour
             CheckersGame.Select((int)mouseOver.x, (int)mouseOver.y);
             if (UIData.GameMode == "multi")
             {
-                string move = "CMOVE:" + (int)mouseOver.x + ":" + (int)mouseOver.y + ":" + ((UIData.Color == "black") ? "0" : "1");
+                string move = "CMOVE:" + (int)mouseOver.x + ":" + (int)mouseOver.y + ":" + ((UIData.Color == "Black") ? "0" : "1");
                 Client client = FindObjectOfType<Client>();
                 client.Send(move);
             }
@@ -283,11 +283,11 @@ public class CheckersBoard : MonoBehaviour
     {
         if(WhiteLeft <= 0)
         {
-            UIData.Winner = "black";
+            UIData.Winner = "Black";
         }
         else if(BlackLeft <= 0)
         {
-            UIData.Winner = "white";
+            UIData.Winner = "White";
         }
         else
             return;
@@ -298,7 +298,7 @@ public class CheckersBoard : MonoBehaviour
 
     private void SetCamera(string color)
     {
-        if(color == "black")
+        if(color == "Black")
         {
             WhiteCamera.enabled = false;
             WhiteCamera.GetComponent<AudioListener>().enabled = false;
