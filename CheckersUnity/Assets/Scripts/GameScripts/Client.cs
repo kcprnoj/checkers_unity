@@ -86,15 +86,13 @@ public class Client : MonoBehaviour
             case "SW":
                 for (int i = 1; i < serverData.Length -1; i++)
                 {
-                    UserConnected(serverData[i], false);
-                    if (serverData[i] != ClientName)
-                        UIData.EnemyName = serverData[i];
+                    UserConnected(serverData[i]);
                 }
                 Send("CW:" + ClientName + ":" + ((UIData.Color == "White")?1:0));
                 break;
 
             case "SNC":
-                UserConnected(serverData[1], false);
+                UserConnected(serverData[1]);
                 break;
 
             case "SMOVE":
@@ -149,13 +147,16 @@ public class Client : MonoBehaviour
         EnemyMove.y = (float)y;
     }
 
-    private void UserConnected(string name, bool isWhite)
+    private void UserConnected(string name)
     {
         GameClient client = new GameClient();
         client.name = name;
 
         players.Add(client);
         Debug.Log("Connected " + client.name);
+
+        if (client.name != UIData.Name)
+            UIData.EnemyName = client.name;
 
         if (players.Count == 2)
             StartGame();
