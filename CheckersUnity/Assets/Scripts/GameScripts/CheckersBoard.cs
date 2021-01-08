@@ -39,7 +39,7 @@ public class CheckersBoard : MonoBehaviour
     Game CheckersGame;
 
     private List<GameObject> possibleMoves;
-    private bool noAI = true;
+    private bool noAI = false;
 
     public void Awake()
     {
