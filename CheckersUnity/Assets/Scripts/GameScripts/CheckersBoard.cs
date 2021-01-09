@@ -305,6 +305,10 @@ public class CheckersBoard : MonoBehaviour
             WhiteCamera.GetComponent<AudioListener>().enabled = false;
             BlackCamera.enabled = true;
             BlackCamera.GetComponent<AudioListener>().enabled = true;
+            if(UIData.GameMode == "multi")
+            {
+                BlackCamera.transform.position += new Vector3(0, 0, -1);
+            }
         }
         else
         {
@@ -312,6 +316,10 @@ public class CheckersBoard : MonoBehaviour
             WhiteCamera.GetComponent<AudioListener>().enabled = true;
             BlackCamera.enabled = false;
             BlackCamera.GetComponent<AudioListener>().enabled = false;
+            if (UIData.GameMode == "multi")
+            {
+                WhiteCamera.transform.position += new Vector3(0, 0, 1);
+            }
         }
     }
 
