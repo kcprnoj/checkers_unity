@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class SimpleAlgoirthm
 {
@@ -27,6 +28,7 @@ public class SimpleAlgoirthm
                         {
                             BestMove = move;
                             BestPiece = board[i, j];
+                            Debug.Log(ScoreMove(BestMove, BestPiece));
                         }
                     }
                 }
@@ -36,13 +38,18 @@ public class SimpleAlgoirthm
         return BestMove;
     }
 
-    private int ScoreMove(KeyValuePair<KeyValuePair<int, int>, List<Piece>> move, Piece piece)
+    private double ScoreMove(KeyValuePair<KeyValuePair<int, int>, List<Piece>> move, Piece piece)
     {
         if (move.Key.Key == -1)
         {
             return -1;
         }
-        int score = move.Value.Count;
+        double score = move.Value.Count;
+
+        if (Color == PieceColor.Black)
+            score += piece.Row / 16.0;
+        else
+            score -= piece.Row / 16.0;
 
         return score;
     }
