@@ -73,7 +73,13 @@ public class UIController : MonoBehaviour
         try
         {
             Server server = Instantiate(ServerPrefab).GetComponent<Server>();
-            server.Init();
+
+            if (!server.Init())
+            {
+                GoToMenu();
+                return;
+            }
+
             Client client = Instantiate(ClientPrefab).GetComponent<Client>();
             client.ClientName = hostName;
             client.isWhite = (UIData.Color == "White");
@@ -101,5 +107,11 @@ public class UIController : MonoBehaviour
         Client client = FindObjectOfType<Client>();
         if (client != null)
             Destroy(client.gameObject);
+    }
+
+    private void GoToMenu()
+    {
+        BackMultiplayerButton();
+        SceneManager.LoadScene(0);
     }
 }

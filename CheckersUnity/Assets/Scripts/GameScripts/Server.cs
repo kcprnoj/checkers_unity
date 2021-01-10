@@ -165,11 +165,13 @@ public class Server : MonoBehaviour
 
     private void OnApplicationQuit()
     {
+        server.Stop();
         Broadcast("SDOWN:", serverClients);
     }
 
     private void OnDisable()
     {
+        server.Stop();
         Broadcast("SDOWN:", serverClients);
     }
 }
