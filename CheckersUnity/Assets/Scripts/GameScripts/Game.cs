@@ -198,21 +198,21 @@ public class Game
 
         if (piece.Color == PieceColor.Black || piece.King)
         {
-            AddRange(moves, TraverseLeft(row - 1, System.Math.Max(row - 3, -1), -1, piece.Color, left));
-            AddRange(moves, TraverseRight(row - 1, System.Math.Max(row - 3, -1), -1, piece.Color, right));
+            AddRange(moves, TraverseLeft(row - 1, System.Math.Max(row - 3, -1), -1, piece.Color, left, piece.King));
+            AddRange(moves, TraverseRight(row - 1, System.Math.Max(row - 3, -1), -1, piece.Color, right, piece.King));
         }
 
         if (piece.Color == PieceColor.White || piece.King)
         {
-            AddRange(moves, TraverseLeft(row + 1, System.Math.Min(row + 3, 8), 1, piece.Color, left));
-            AddRange(moves, TraverseRight(row + 1, System.Math.Min(row + 3, 8), 1, piece.Color, right));
+            AddRange(moves, TraverseLeft(row + 1, System.Math.Min(row + 3, 8), 1, piece.Color, left, piece.King));
+            AddRange(moves, TraverseRight(row + 1, System.Math.Min(row + 3, 8), 1, piece.Color, right, piece.King));
         }
 
         return moves;
     }
 
     public Dictionary<KeyValuePair<int, int>, List<Piece>>
-        TraverseLeft(int start, int stop, int step, PieceColor color, int left, List<Piece> skipped = null)
+        TraverseLeft(int start, int stop, int step, PieceColor color, int left, bool king, List<Piece> skipped = null)
     {
         Dictionary<KeyValuePair<int, int>, List<Piece>> moves = new Dictionary<KeyValuePair<int, int>, List<Piece>>();
         List<Piece> last = new List<Piece>();
@@ -245,12 +245,26 @@ public class Game
                 if (last.Count != 0)
                 {
                     int row;
+
+                    if (king)
+                    {
+                        if (step == 1)
+                            row = System.Math.Max(i - 3, 0);
+                        else
+                            row = System.Math.Min(i + 3, 8);
+
+                        if (!(last[0].Row == i - step && left - 1 == last[0].Col))
+                            AddRange(moves, TraverseLeft(i - step, row, -step, color, left - 1, king, moves[new KeyValuePair<int, int>(i, left)]));
+                        if (!(last[0].Row == i - step && left + 1 == last[0].Col))
+                            AddRange(moves, TraverseRight(i - step, row, -step, color, left + 1, king, moves[new KeyValuePair<int, int>(i, left)]));
+                    }
+
                     if (step == -1)
                         row = System.Math.Max(i - 3, 0);
                     else
                         row = System.Math.Min(i + 3, 8);
-                    AddRange(moves, TraverseLeft(i + step, row, step, color, left - 1, last));
-                    AddRange(moves, TraverseRight(i + step, row, step, color, left + 1, last));
+                    AddRange(moves, TraverseLeft(i + step, row, step, color, left - 1, king, last));
+                    AddRange(moves, TraverseRight(i + step, row, step, color, left + 1, king, last));
                 }
                 break;
             }
@@ -265,7 +279,7 @@ public class Game
     }
 
     public Dictionary<KeyValuePair<int, int>, List<Piece>>
-        TraverseRight(int start, int stop, int step, PieceColor color, int right, List<Piece> skipped = null)
+        TraverseRight(int start, int stop, int step, PieceColor color, int right, bool king, List<Piece> skipped = null)
     {
         Dictionary<KeyValuePair<int, int>, List<Piece>> moves = new Dictionary<KeyValuePair<int, int>, List<Piece>>();
         List<Piece> last = new List<Piece>();
@@ -298,12 +312,26 @@ public class Game
                 if (last.Count != 0)
                 {
                     int row;
+
+                    if (king)
+                    {
+                        if (step == 1)
+                            row = System.Math.Max(i - 3, 0);
+                        else
+                            row = System.Math.Min(i + 3, 8);
+
+                        if (!(last[0].Row == i - step && right - 1 == last[0].Col))
+                            AddRange(moves, TraverseLeft(i - step, row, -step, color, right - 1, king, moves[new KeyValuePair<int, int>(i, right)]));
+                        if (!(last[0].Row == i - step && right + 1 == last[0].Col))
+                            AddRange(moves, TraverseRight(i - step, row, -step, color, right + 1, king, moves[new KeyValuePair<int, int>(i, right)]));
+                    }
+
                     if (step == -1)
                         row = System.Math.Max(i - 3, 0);
                     else
                         row = System.Math.Min(i + 3, 8);
-                    AddRange(moves, TraverseLeft(i + step, row, step, color, right - 1, last));
-                    AddRange(moves, TraverseRight(i + step, row, step, color, right + 1, last));
+                    AddRange(moves, TraverseLeft(i + step, row, step, color, right - 1, king, last));
+                    AddRange(moves, TraverseRight(i + step, row, step, color, right + 1, king, last));
                 }
                 break;
             }
