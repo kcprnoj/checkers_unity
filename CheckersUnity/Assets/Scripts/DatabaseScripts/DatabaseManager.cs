@@ -106,7 +106,7 @@ public class DatabaseManager
                 else if (groupElem.Status == "Defeat")
                     defeats++;
 
-                if (time > groupElem.Time)
+                if (time > groupElem.Time && groupElem.Status == "Win")
                 {
                     time = groupElem.Time;
                     side = groupElem.Side;
